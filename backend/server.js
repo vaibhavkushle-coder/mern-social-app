@@ -85,6 +85,10 @@ app.put(
     upload.single("image"),
     async(req,res)=>{
 
+        try{
+
+            console.log(req.file);
+
         const result = await
         cloudinary.uploader.upload(
             `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`
@@ -104,6 +108,17 @@ app.put(
             message:"Profile photo updated",
             profilepic: user.profilePic
         });
+
+    }catch(error){
+
+        console.log(error);
+
+        res.status(500).json({
+            error:error.message
+        });
+
+    }
+    
     }
 );
 
