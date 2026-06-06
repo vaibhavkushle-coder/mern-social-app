@@ -85,9 +85,24 @@ app.put(
     upload.single("image"),
     async(req,res)=>{
 
+        const result = await
+        cloudinary.uploader.upload(
+            `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`
+        );
+
+        const user = await User.findByIdAndUpdate(
+            req.user.id,
+            {
+                profilePic: result.secure_url
+            },
+            {
+                new:true
+            }
+        );
+
         res.json({
-            message:"Route working",
-            file:req.file
+            message:"Profile photo updated",
+            profilepic: user.profilePic
         });
     }
 );

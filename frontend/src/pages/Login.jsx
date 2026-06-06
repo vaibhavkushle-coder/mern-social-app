@@ -66,7 +66,7 @@ function Login(){
         const response = await axios.post(
             
 
-            "http://mern-social-app-xdit.onrender.com/api/auth/login",
+            "https://mern-social-app-xdit.onrender.com/api/auth/login",
 
             data
 
