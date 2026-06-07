@@ -14,10 +14,6 @@ const cloudinary = require("cloudinary").v2;
 
 dotenv.config();
 
-console.log("Cloud Name:", process.env.CLOUDINARY_CLOUD_NAME);
-console.log("API Key:", process.env.CLOUDINARY_API_KEY);
-console.log("API Secret:", process.env.CLOUDINARY_API_SECRET);
-
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
@@ -49,18 +45,15 @@ app.get("/",(req,res)=>{
 
 });
 
-app.get("/profile",
-    authMiddleware,
-    (req,res)=>{
+app.get("/profile", authMiddleware, async (req, res) => {
 
-        res.status(200).json({
-            message:"Profile data",
+    const user = await User.findById(req.user.id);
 
-            user:req.user
-        });
-
-    }
-)
+    res.json({
+        message: "Profile data",
+        user
+    });
+});
 
 app.put("/profile",authMiddleware,async(req,res)=>{
 
@@ -90,8 +83,6 @@ app.put(
     async(req,res)=>{
 
         try{
-
-            console.log(req.file);
 
         const result = await
         cloudinary.uploader.upload(

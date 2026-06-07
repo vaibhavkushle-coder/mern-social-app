@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 function Home(){
 
     const navigate = useNavigate();
-    const [profile,setProfile]=useState("");
+    const [profile,setProfile]=useState({});
 
     useEffect(()=>{
         getProfile();
@@ -36,7 +36,6 @@ function Home(){
 
             );
 
-            console.log(response.data);
             setProfile(response.data.user);
 
         }catch(error){
@@ -69,13 +68,27 @@ function Home(){
 
         <div className="bg-gray-50 p-5 rounded-lg border mt-6">
 
+
+
+            <div className="flex items-center gap-3 mb-3">
+
+
+                <img
+                    src={profile.profilePic ||
+                        "https://via.placeholder.com/100"}
+                        alt="profile"
+                        className="w-14 h-14 rounded-full object-cover border"
+                        />
+
         <p className="text-lg text-gray-500">
             
            👋 Welcome, {profile.email}
             
         </p>
 
-        <h2> 🪪 ID: {profile.id}</h2>
+        </div>
+
+        <h2> 🪪 ID: {profile._id}</h2>
 
         </div>
 

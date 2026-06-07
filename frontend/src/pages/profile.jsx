@@ -32,7 +32,8 @@ function Profile(){
 
         );
 
-        setProfile(response.data.user);
+
+setProfile(response.data.user);
 
     }
 
@@ -66,6 +67,8 @@ function Profile(){
 
     async function handleUpload(){
 
+        try{
+
         const token = localStorage.getItem("token");
 
         const formData = new FormData();
@@ -74,7 +77,7 @@ function Profile(){
 
         const response = await axios.put(
 
-            "https:/mern-social-app-xdit.onrender.com/profile-photo",
+            "https://mern-social-app-xdit.onrender.com/profile-photo",
 
             formData,
 
@@ -85,7 +88,16 @@ function Profile(){
             }
         );
 
-        console.log(response.data);
+setProfile({
+    ...profile,
+    profilePic: response.data.profilepic
+});
+
+    }catch(error){
+
+            console.log(error.response?.data);
+
+    }
     }
 
     return(
@@ -103,7 +115,18 @@ function Profile(){
     
     </h1>
 
-    <div className="text-6xl text-center mb-4">👤</div>
+    {
+        profile.profilePic ? (
+            <img
+            src={profile.profilePic}
+            className="w-28 h-28 rounded-full mx-auto
+            mb-4 object-cover border-4 border-blue-500"
+            />
+        ) : (
+            <div className="text-6xl text-center mb-4">
+                👤</div>
+        )
+    }
 
     <input 
     type="file"
