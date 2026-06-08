@@ -128,13 +128,25 @@ setProfile({
         )
     }
 
+    <label className="cursor-pointer bg-gray-200
+    px-4 py-2 rounded-lg block
+    text-center mb-3">
+       📂 Choose Photo
+
     <input 
     type="file"
     onChange={(e)=>setImage(e.target.files[0])}
+    className="hidden"
     />
 
-    <button onClick={handleUpload}>
-        Upload Photo
+    </label>
+
+    <button 
+    onClick={handleUpload}
+    className="w-full bg-blue-500 text-white
+    py-1 rounded-lg hover:bg-blue-600
+    transition mb-9">
+       📸 Upload Photo
     </button>
 
     <div className="bg-gray-50 border rounded-lg p-4 mb-4">
@@ -161,7 +173,7 @@ setProfile({
 }
 <p>
     
-    🪪ID: {profile.id}
+    🪪ID: {profile._id}
     
     </p>
 

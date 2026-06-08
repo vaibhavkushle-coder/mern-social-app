@@ -176,7 +176,7 @@ app.get("/posts",authMiddleware,async(req,res)=>{
     const posts = await Post.find({
 
         userId:req.user.id
-    }).populate("userId","email");
+    }).populate("userId","email profilePic");
 
     res.json(posts);
 });

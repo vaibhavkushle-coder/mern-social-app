@@ -1,10 +1,41 @@
 import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import useAuth from "../hooks/useAuth";
 function Navbar(){
+
+const [profile, setProfile] = useState({});
 
 const {token,setToken}=useAuth();
 
    const navigate = useNavigate();
+
+   useEffect(()=>{
+    getProfile();
+   },[]);
+
+   async function getProfile(){
+
+    try{
+
+        const token = localStorage.getItem("token");
+
+        const responce = await axios.get(
+
+            "https://mern-social-app-xdit.onrender.com/profile",
+            {
+                headers:{
+                    Authorization: token
+                }
+            }
+        );
+
+        setProfile(responce.data.user);
+
+    }catch(error){
+        console.log(error);
+    }
+   }
 
    function handleLogout(){
 
@@ -28,16 +59,31 @@ const {token,setToken}=useAuth();
 
    return(
 
-    <div className="flex justify-between items-center
+    <div className="flex flex-col items-center
      bg-slate-900 text-white p-4 mt-2 ml-2 mr-2 rounded-lg
      sticky top-2 z-50">
 
 
         {
 
-            token?
+            token?   
 
          <div className="flex flex-wrap gap-4 items-center justify-center">
+
+            <div>
+
+                <img 
+                src={profile.profilePic ||
+                    "https://via.placeholder.com/50"}
+                    alt="profile"
+                    className="w-14 h-14 rounded-full
+                border-2 border-blue-400 object-cover ml-8"
+                    />
+
+                    <p className="text-sm text-gray-300">
+                        {profile.email}
+                    </p>
+                </div>
 
             <Link className="h-12 min-w-[140px] flex items-center 
             justify-center bg-blue-500 rounded-lg hover:scale-105 

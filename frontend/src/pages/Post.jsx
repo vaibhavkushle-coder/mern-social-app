@@ -195,6 +195,21 @@ post.content.toLowerCase().includes(search.toLocaleLowerCase())
                       w-full max-w-md mx-auto hover:translate-y-1"
                     key={post._id}>
 
+
+                        <div>
+
+
+                            <img
+                            src={post.userId?.profilePic}
+                            alt="profile"
+                            />
+
+                            <p>
+                                {post.userId.email}
+                            </p>
+
+                            </div>
+
                         
                             {
                                 editingId === post._id ? (
@@ -229,13 +244,13 @@ post.content.toLowerCase().includes(search.toLocaleLowerCase())
                                     </p>
 
                                     <p className="text-sm text-gray-500">
-                                        {new Date(post.createdAt).toLocaleDateString()}
+                                       🗓️ {new Date(post.createdAt).toLocaleString()}
                                     </p>
 
                                     <button className="bg-pink-100 px-3 py-1 rounded-lg 
-                                    mt-2 hover:scale-105 transition"
+                                    mt-2 hover:scale-105 transition mb-1"
                                      onClick={()=>handleLike(post._id)}>
-                                        ❤️ {post.likes}
+                                        ❤️ Like ({post.likes})
                                     </button>
 
                                     <Input 
@@ -259,11 +274,11 @@ post.content.toLowerCase().includes(search.toLocaleLowerCase())
                                     {
                                         post.comments?.map((comment,index)=>(
 
-                                            <p className="text-sm text-gray-700 mt-2 
-                                            bg-gray-100 rounded-lg p-1"
-                                            key={index}>
-                                                {comment.text}
-                                            </p>
+                                            <div
+                                            key={index}
+                                            className="bg-gray-100 p-2 rounded-lg mt-2">
+                                               💬 {comment.text}
+                                            </div>
                                         ))
                                     }
                                     
