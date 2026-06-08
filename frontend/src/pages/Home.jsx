@@ -100,6 +100,7 @@ function Home(){
                     <p>{stats.totalComments}</p>
                     <p>Comments</p>
                 </div>
+                
             </div>
 
       {
