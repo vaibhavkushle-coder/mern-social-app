@@ -176,7 +176,7 @@ app.get("/posts",authMiddleware,async(req,res)=>{
     const posts = await Post.find({
 
         userId:req.user.id
-    }).populate("userId","email profilePic");
+    }).populate("userId","name email profilePic");
 
     res.json(posts);
 });
@@ -209,7 +209,7 @@ app.get("/dashboard",authMiddleware,async(req,res)=>{
 app.get("/feed",async(req,res)=>{
 
     const posts = await Post.find()
-    .populate("userId","email profilePic")
+    .populate("userId","name email profilePic")
     .sort({ createAt: -1 });
 
     res.json(posts);

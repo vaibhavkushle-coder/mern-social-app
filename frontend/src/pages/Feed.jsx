@@ -40,7 +40,7 @@ function Feed(){
                         />
                         
                         <p className="font-semibold text-gray-700"
-                        >{post.userId?.email}</p>
+                        >{post.userId?.name}</p>
 
                         </div>
 
