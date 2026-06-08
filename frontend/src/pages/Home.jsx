@@ -84,21 +84,24 @@ function Home(){
                 
             </h1>
 
-            <div>
+            <div className="grid grid-cols-3 gap-3 mt-5">
 
-                <div>
+                <div className="bg-blue-100 p-3 
+                rounded-lg text-center">
                     <h2>📄</h2>
                     <p>{stats.totalPosts}</p>
                     <p>Posts</p>
                 </div>
 
-                <div>
+                <div className="bg-blue-100 p-3
+                rounded-lg text-center">
                     <h2>❤️</h2>
                     <p>{stats.totalLikes}</p>
                     <p>Likes</p>
                 </div>
 
-                <div>
+                <div className="bg-blue-100 p-3
+                rounded-lg text-center">
                     <h2>💬</h2>
                     <p>{stats.totalComments}</p>
                     <p>Comments</p>
@@ -118,7 +121,7 @@ function Home(){
 
                 <img
                     src={profile.profilePic ||
-                        "https://via.placeholder.com/100"}
+                        "/user.png"}
                         alt="profile"
                         className="w-14 h-14 rounded-full object-cover border"
                         />

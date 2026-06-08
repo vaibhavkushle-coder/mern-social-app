@@ -206,6 +206,16 @@ app.get("/dashboard",authMiddleware,async(req,res)=>{
     });
 });
 
+app.get("/feed",async(req,res)=>{
+
+    const posts = await Post.find()
+    .populate("userId","email profilePic")
+    .sort({ createAt: -1 });
+
+    res.json(posts);
+
+});
+
 app.delete("/post/:id",authMiddleware,async(req,res)=>{
 
     await Post.findByIdAndDelete(req.params.id);

@@ -11,6 +11,7 @@ import Profile from './pages/profile';
 import ChangePassword from './pages/ChangePassword';
 import CreatePost from './pages/CreatePost';
 import Post from './pages/Post';
+import Feed from './pages/Feed';
 function App(){
 
 
@@ -97,6 +98,11 @@ function App(){
       </>
     </ProtectedRoute>
    }
+   />
+
+   <Route
+   path="/feed"
+   element={<Feed/>}
    />
 
     </Routes>

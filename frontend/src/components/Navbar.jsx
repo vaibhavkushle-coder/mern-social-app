@@ -74,7 +74,7 @@ const {token,setToken}=useAuth();
 
                 <img 
                 src={profile.profilePic ||
-                    "https://via.placeholder.com/50"}
+                    "/user.png"}
                     alt="profile"
                     className="w-14 h-14 rounded-full
                 border-2 border-blue-400 object-cover ml-8"
@@ -119,6 +119,15 @@ const {token,setToken}=useAuth();
             to="/posts">
             
             📰Posts
+
+            </Link>
+
+            <Link className="h-12 min-w-[140px] flex items-center 
+            justify-center bg-pink-600 rounded-lg hover:scale-105 
+            transition-all duration-300 font-semibold cursor-pointer"
+            to="/feed">
+            
+           🌏 Feed
 
             </Link>
 
