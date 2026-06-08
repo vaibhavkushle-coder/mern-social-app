@@ -12,6 +12,7 @@ function Home(){
 
     useEffect(()=>{
         getProfile();
+        getDeshboard();
     },[]);
 
 
@@ -53,13 +54,15 @@ function Home(){
 
         const response = await axios.get(
 
-            "https://mern-social-app-xdit.onrender.com/deshboard",
+            "https://mern-social-app-xdit.onrender.com/dashboard",
             {
                 headers:{
                     authorization: token
                 }
             }
         );
+
+        console.log(response.data);
 
         setStats(response.data);
     }

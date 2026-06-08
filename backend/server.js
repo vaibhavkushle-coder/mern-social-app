@@ -181,7 +181,7 @@ app.get("/posts",authMiddleware,async(req,res)=>{
     res.json(posts);
 });
 
-app.get("/deshboard",authMiddleware,async(req,res)=>{
+app.get("/dashboard",authMiddleware,async(req,res)=>{
 
     const posts = await Post.find({
         userId: req.user.id
