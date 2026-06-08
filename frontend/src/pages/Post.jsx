@@ -196,15 +196,17 @@ post.content.toLowerCase().includes(search.toLocaleLowerCase())
                     key={post._id}>
 
 
-                        <div>
+                        <div className="flex items-center gap-3 mb-3">
 
 
                             <img
                             src={post.userId?.profilePic}
                             alt="profile"
+                            className="w-10 h-10 rounded-full 
+                            object-cover border"
                             />
 
-                            <p>
+                            <p className="font-semibold text-gray-700">
                                 {post.userId.email}
                             </p>
 

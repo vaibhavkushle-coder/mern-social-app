@@ -181,6 +181,31 @@ app.get("/posts",authMiddleware,async(req,res)=>{
     res.json(posts);
 });
 
+app.get("/deshboard",authMiddleware,async(req,res)=>{
+
+    const posts = await Post.find({
+        userId: req.user.id
+    });
+
+    const totalPosts = posts.length;
+
+    const totalLikes = posts.reduce(
+        (sum,post) =>sum + post.likes,
+        0
+    );
+
+    const totalComments = posts.reduce(
+        (sum,post) => sum + post.comments.length,
+        0
+    );
+
+    res.json({
+        totalPosts,
+        totalLikes,
+        totalComments
+    });
+});
+
 app.delete("/post/:id",authMiddleware,async(req,res)=>{
 
     await Post.findByIdAndDelete(req.params.id);

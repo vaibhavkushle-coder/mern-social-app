@@ -8,6 +8,7 @@ function Home(){
 
     const navigate = useNavigate();
     const [profile,setProfile]=useState({});
+    const [stats,setStats]=useState({});
 
     useEffect(()=>{
         getProfile();
@@ -46,6 +47,23 @@ function Home(){
         }
     }
 
+    async function getDeshboard(){
+
+        const token = localStorage.getItem("token");
+
+        const response = await axios.get(
+
+            "https://mern-social-app-xdit.onrender.com/deshboard",
+            {
+                headers:{
+                    authorization: token
+                }
+            }
+        );
+
+        setStats(response.data);
+    }
+
     return(
         <div className="p-10 min-h-screen flex justify-center
         items-center bg-gray-100 p-5">
@@ -62,6 +80,27 @@ function Home(){
                 Welcome to MERN App
                 
             </h1>
+
+            <div>
+
+                <div>
+                    <h2>📄</h2>
+                    <p>{stats.totalPosts}</p>
+                    <p>Posts</p>
+                </div>
+
+                <div>
+                    <h2>❤️</h2>
+                    <p>{stats.totalLikes}</p>
+                    <p>Likes</p>
+                </div>
+
+                <div>
+                    <h2>💬</h2>
+                    <p>{stats.totalComments}</p>
+                    <p>Comments</p>
+                </div>
+            </div>
 
       {
         profile?
