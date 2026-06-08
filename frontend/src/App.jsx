@@ -102,8 +102,12 @@ function App(){
 
    <Route
    path="/feed"
-   element={<Feed/>}
-   />
+   element={
+    <>
+    <Navbar/>
+   <Feed/>
+   </>
+  }/>
 
     </Routes>
     </div>

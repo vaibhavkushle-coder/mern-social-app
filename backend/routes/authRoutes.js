@@ -33,6 +33,8 @@ router.post("/register",async(req,res)=>{
 
     const newUser = new User({
 
+        name:data.name,
+
         email:data.email,
 
         password:hashedPassword
@@ -92,6 +94,7 @@ const token = jwt.sign(
 
     {
         id:user._id,
+        name:user.name,
         email:user.email
     },
 

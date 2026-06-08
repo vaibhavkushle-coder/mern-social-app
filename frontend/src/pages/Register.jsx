@@ -20,16 +20,17 @@ if(token){
     return <Navigate to="/"/>
 }
 
-const [email,setEmail]=useState("");
-const [password,setPassword]=useState("");
-const [loading,setLoading]=useState(false);
-const [error,setError]=useState("");
+const [email,setEmail] = useState("");
+const [password,setPassword] = useState("");
+const [name,setName] = useState("");
+const [loading,setLoading] = useState(false);
+const [error,setError] = useState("");
 
 async function handleRegister(){
 
     try{
 
-        if(!email || !password){
+        if(!name || !email || !password){
 
             alert("Fill all fields");
 
@@ -52,6 +53,7 @@ async function handleRegister(){
 
         const data = {
 
+            name:name,
             email:email,
             password:password
 
@@ -74,6 +76,8 @@ async function handleRegister(){
         setEmail("");
 
         setPassword("");
+
+        setName("");
 
         navigate("/login");
 
@@ -101,6 +105,13 @@ return(
         >Register</h1>
 
         <div className="flex flex-col gap-4">
+
+        <Input
+        type="text"    
+        placeholder="Enter name..."
+        value={name}
+        onChange={(e)=>setName(e.target.value)}
+        />
 
         <Input
         type="email"
