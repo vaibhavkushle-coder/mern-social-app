@@ -23,6 +23,7 @@ function Feed(){
 
             <h1>🌏 Public Feed</h1>
 
+           
             {
                 posts.map((post)=>(
                     <div key={post._id}
@@ -30,6 +31,8 @@ function Feed(){
                     mb-5 max-w-xl mx-auto hover:shadow-2xl transition">
 
                         <div className="flex items-center gap-3 mb-3">
+
+                         
 
                         <img
                         src={post.userId?.profilePic}
