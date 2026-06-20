@@ -59,7 +59,7 @@ function Feed(){
 
         const response = await axios.put(
 
-            `https:/mern-social-app-xdit.onrender.com/follow/${userId}`,
+            `https://mern-social-app-xdit.onrender.com/follow/${userId}`,
             {},
             {
                 headers:{
