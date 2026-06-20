@@ -166,6 +166,14 @@ setProfile({
     
     </p>
 
+    <p>
+       👥 Followers: {profile.followers?.lenght || 0}
+    </p>
+
+    <p>
+       ➡️ Following: {profile.following?.lengh || 0}
+    </p>
+
     {
         isEditing && (
             <Input

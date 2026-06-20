@@ -88,6 +88,7 @@ function Feed(){
 
         alert(response.data.message);
         getFeed();
+        getProfile();
     }
 
     async function handleUnfollow(userId){
