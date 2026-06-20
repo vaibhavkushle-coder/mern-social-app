@@ -5,8 +5,8 @@ import useAuth from "../hooks/useAuth";
 function Navbar(){
 
 const [profile, setProfile] = useState({});
-
 const {token,setToken}=useAuth();
+const [darkMode,setDarkMode] = useState(false);
 
    const navigate = useNavigate();
 
@@ -188,9 +188,13 @@ const {token,setToken}=useAuth();
                 👤
             </NavLink>
 
+             
+
             <button onClick={handleLogout} className="text-2xl p-2">
                 🚪
             </button>
+
+        
         </div>
 
     </div>

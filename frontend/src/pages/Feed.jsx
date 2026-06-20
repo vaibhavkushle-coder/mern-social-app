@@ -6,6 +6,8 @@ function Feed(){
 
     const [posts,setPosts] = useState([]);
     const [comment,setComment] = useState("");
+    const [search,setSearch] = useState("");
+    const [loading,setLoading] = useState(true);
 
     useEffect(()=>{
         getFeed();
@@ -13,11 +15,14 @@ function Feed(){
 
     async function getFeed(){
 
+        setLoading(true);
+
         const response = await axios.get(
 
             "https://mern-social-app-xdit.onrender.com/feed"
         );
         setPosts(response.data);
+        setLoading(false);
     }
 
     async function handleLike(id){
@@ -48,14 +53,70 @@ function Feed(){
         getFeed();
     }
 
+    async function handleFollow(userId){
+
+        const token = localStorage.getItem("token");
+
+        const response = await axios.put(
+
+            `https:/mern-social-app-xdit.onrender.com/follow/${userId}`,
+            {},
+            {
+                headers:{
+                    Authorization: token
+                }
+            }
+        );
+
+        alert(response.data.message);
+        getFeed();
+    }
+
+     const filteredPosts =
+           posts.filter((post)=>
+           
+           post.title.toLowerCase().includes(search.toLowerCase()) ||
+           
+           post.content.toLowerCase().includes(search.toLowerCase()) ||
+           
+           post.userId?.name?.toLowerCase().includes(search.toLowerCase())
+           
+           );
+
     return(
         <div className="min-h-screen bg-gray-100 p-5 pb-24">
 
-            <h1>🌏 Public Feed</h1>
+            <h1 className="text-center font-bold"
+            >🌏 Public Feed</h1>
 
-           
+            <Input
+            type="text"
+            placeholder="🔍 Search posts..."
+            value={search}
+            onChange={(e)=>setSearch(e.target.value)}
+            />
+
+          {
+           ! loading && filteredPosts.length === 0 && (
+                <div className="text-center mt-10">
+
+                    <h2 className="text-2xl font-bold text-gray-500"
+                    >NO posts found 😔</h2>
+                </div>
+            )
+          }
+
+          {
+            loading && (
+                <div className="text-center mt-10">
+                 ⌛ Loading Feed...
+                </div>
+            )
+          }
+
             {
-                posts.map((post)=>(
+                ! loading &&
+                filteredPosts.map((post)=>(
                     <div key={post._id}
                     className="bg-white p-5 rounded-xl shadow-lg
                     mb-5 max-w-xl mx-auto hover:shadow-2xl transition">
@@ -75,6 +136,15 @@ function Feed(){
                         <p className="font-semibold text-gray-700"
                         >{post.userId?.name}</p>
 
+                        <button
+                        className="bg-blue-500 text-white px-3
+                        py-1 rounded-lg text-sm"
+                        onClick={()=>handleFollow(post.userId._id)
+                        }
+                        >
+                           ➕ Follow
+                        </button>
+
                         </div>
 
                          <p className="text-sm text-gray-500">
@@ -88,6 +158,8 @@ function Feed(){
                         <p className="text-gray-600"
                         >{post.content}</p>
 
+                        <div className="flex gap-4 mt-2">
+
                         <button
                         className="bg-pink-100 px-3 py-1 
                         rounded-lg mt-2 mb-1
@@ -97,6 +169,12 @@ function Feed(){
                         </button>
 
                        
+                         <p className="text-sm text-gray-500 mt-2">
+                           💬 {post.comments?.length || 0} comments
+
+                        </p>
+
+                        </div>
 
                         <Input
                         value={comment}
@@ -104,10 +182,6 @@ function Feed(){
                         placeholder="Write a comment..."
                         />
 
-                         <p className="text-sm text-gray-500 mt-2">
-                           💬 {post.comments?.length || 0} comments
-
-                        </p>
 
 
                         {

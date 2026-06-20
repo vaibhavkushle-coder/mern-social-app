@@ -51,7 +51,8 @@ setProfile(response.data.user);
             "https://mern-social-app-xdit.onrender.com/profile",
 
             {
-                email:profile.email
+                email:profile.email,
+                name:profile.name
             },
 
             {
@@ -164,6 +165,21 @@ setProfile({
     📥Email: {profile.email}
     
     </p>
+
+    {
+        isEditing && (
+            <Input
+            type="text"
+            value={profile.name}
+            onChange={(e)=>
+                setProfile({
+                    ...profile,
+                    name:e.target.value
+                })
+            }
+            />
+        )
+    }
 
 {
     isEditing && (

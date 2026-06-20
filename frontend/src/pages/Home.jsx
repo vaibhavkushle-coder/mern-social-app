@@ -69,18 +69,18 @@ function Home(){
 
     return(
         <div className="p-10 min-h-screen flex justify-center
-        items-center bg-gray-100 p-5">
+        mt-8 bg-gray-100 p-5">
 
             <div className="bg-white p-8 rounded-xl shadow-lg
             w-full max-w-lg">
 
             <h1 className="text-3xl font-bold
              text-center mb-6"
-            >Home page</h1>
+            >🏠 Home page</h1>
 
-            <h1 className="text-4xl font-bold mb-4 w-full max-w-sm">
+            <h1 className="text-4xl font-bold mb-4 mt-10 w-full max-w-sm">
                 
-                Welcome to MERN App
+               ✨ Welcome to MERN App.
                 
             </h1>
 

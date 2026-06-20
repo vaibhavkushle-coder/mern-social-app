@@ -57,13 +57,16 @@ app.get("/profile", authMiddleware, async (req, res) => {
 
 app.put("/profile",authMiddleware,async(req,res)=>{
 
-    const { email } = req.body;
+    const { email, name } = req.body;
 
     const user = await User.findByIdAndUpdate(
 
         req.user.id,
 
-        {email},
+        {
+            email,
+            name
+        },
 
         {new:true}
 
@@ -150,6 +153,41 @@ app.put("/change-password",authMiddleware,async(req,res)=>{
     });
 
 });
+
+
+app.put("/follow/:id",authMiddleware,
+    async(req,res)=>{
+
+        const userToFollow = await
+        User.findById(req.params.id);
+
+        const currentUser = await
+        User.findById(req.user.id);
+
+        if(!userToFollow){
+            return res.status(404).json({
+                message:"User not found"
+            });
+        }
+
+        if(currentUser.following.includes(userToFollow._id)){
+
+            return res.status(400).json({
+                message:"Already following"
+            });
+        }
+
+        currentUser.following.push(userToFollow._id);
+        userToFollow.followers.push(currentUser._id);
+
+        await currentUser.save();
+        await userToFollow.save();
+
+        res.json({
+            message: "User followed successfully"
+        });
+    }
+);
 
 
 app.post("/post",authMiddleware,async(req,res)=>{
