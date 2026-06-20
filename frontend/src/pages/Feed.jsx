@@ -77,11 +77,9 @@ function Feed(){
 
                         </div>
 
-                        <p className="text-xs text-gray-500 mb-2">
-                           🗓️ {new Date(post.createAt).toLocaleDateString()}
-                        </p>
-
-                                                <p>{post.createAt}</p>
+                         <p className="text-sm text-gray-500">
+                                       🗓️ {new Date(post.createdAt).toLocaleString()}
+                                    </p>
 
 
                         <h2 className="text-2xl font-bold mb-2"
