@@ -8,9 +8,11 @@ function Feed(){
     const [comment,setComment] = useState("");
     const [search,setSearch] = useState("");
     const [loading,setLoading] = useState(true);
+    const [following,setFollwing] = useState([]);
 
     useEffect(()=>{
         getFeed();
+        getProfile();
     },[]);
 
     async function getFeed(){
@@ -23,6 +25,22 @@ function Feed(){
         );
         setPosts(response.data);
         setLoading(false);
+    }
+
+    async function getProfile(){
+
+        const token = localStorage.getItem("token");
+
+        const response = await axios.get(
+
+            "https://mern-social-app-xdit.onrender.com/profile",
+            {
+                headers:{
+                    Authorization: token
+                }
+            }
+        );
+        setFollwing(response.data.user.following);
     }
 
     async function handleLike(id){
@@ -72,6 +90,26 @@ function Feed(){
         getFeed();
     }
 
+    async function handleUnfollow(userId){
+
+        const token = localStorage.getItem("token");
+
+        const response = await axios.put(
+
+            `https://mern-social-app-xdit.onrender.com/unfollow/${userId}`,
+            {},
+            {
+                headers:{
+                    Authorization: token
+                }
+            }
+        );
+
+        alert(response.data.message);
+        getFeed();
+        getProfile();
+    }
+
      const filteredPosts =
            posts.filter((post)=>
            
@@ -116,7 +154,13 @@ function Feed(){
 
             {
                 ! loading &&
-                filteredPosts.map((post)=>(
+                filteredPosts.map((post)=>{
+
+                    const isFollowing = 
+                    following.includes(post.userId?._id);
+                    
+                    return(
+
                     <div key={post._id}
                     className="bg-white p-5 rounded-xl shadow-lg
                     mb-5 max-w-xl mx-auto hover:shadow-2xl transition">
@@ -137,12 +181,18 @@ function Feed(){
                         >{post.userId?.name}</p>
 
                         <button
-                        className="bg-blue-500 text-white px-3
-                        py-1 rounded-lg text-sm"
-                        onClick={()=>handleFollow(post.userId._id)
+                        className={`px-3 py-1 rounded-lg text-sm 
+                            text-white ${
+                                isFollowing ? "bg-green-500" :
+                                "bg-blue-500"
+                            }`}
+                        onClick={()=>
+                            isFollowing
+                            ? handleUnfollow(post.userId._id)
+                            : handleFollow(post.userId._id)
                         }
                         >
-                           ➕ Follow
+                         {isFollowing ? "✅ Following" : "➕ Follow"}
                         </button>
 
                         </div>
@@ -210,7 +260,8 @@ function Feed(){
                         }
                         
                         </div>
-                ))
+                )}
+            )
             }
         </div>
     );

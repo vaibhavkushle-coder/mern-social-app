@@ -189,6 +189,45 @@ app.put("/follow/:id",authMiddleware,
     }
 );
 
+app.put("/unfollow/:id",authMiddleware,
+    async(req,res)=>{
+
+        const userToUnfollow = await 
+        User.findById(req.params.id);
+
+        const currentUser = await
+        User.findById(req.user.id);
+    
+
+    if(! currentUser.following.includes(userToUnfollow._id)){
+
+        return res.status(400).json({
+            message:"you are not following this user"
+        });
+    }
+
+    currentUser.following = 
+    currentUser.following.filter(
+        (id) => id.toString() !==
+        userToUnfollow._id.toString()
+    );
+
+    userToUnfollow.followers =
+    userToUnfollow.followers.filter(
+        (id) => id.toString() !==
+        currentUser._id.toString()
+    );
+
+    await currentUser.save();
+    await userToUnfollow.save();
+
+    res.json({
+        message:"User unfollowed successfully"
+    });
+
+}
+);
+
 
 app.post("/post",authMiddleware,async(req,res)=>{
 
