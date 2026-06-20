@@ -207,7 +207,7 @@ post.content.toLowerCase().includes(search.toLocaleLowerCase())
                             />
 
                             <p className="font-semibold text-gray-700">
-                                {post.userId.email}
+                                {post.userId.name}
                             </p>
 
                             </div>
@@ -242,7 +242,7 @@ post.content.toLowerCase().includes(search.toLocaleLowerCase())
                                     </p>
 
                                     <p className="text-sm text-gray-500 mt-2">
-                                        Created By: {post.userId.email}
+                                        Created By: {post.userId.name}
                                     </p>
 
                                     <p className="text-sm text-gray-500">

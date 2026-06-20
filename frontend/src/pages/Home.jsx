@@ -128,13 +128,13 @@ function Home(){
 
         <p className="text-lg text-gray-500">
             
-           👋 Welcome, {profile.email}
+           👋 Welcome, {profile.name}
             
         </p>
 
         </div>
 
-        <h2> 🪪 ID: {profile._id}</h2>
+        <h2> 📩 email: {profile.email}</h2>
 
         </div>
 

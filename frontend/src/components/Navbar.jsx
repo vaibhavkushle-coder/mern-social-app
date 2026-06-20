@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import useAuth from "../hooks/useAuth";
@@ -59,35 +59,21 @@ const {token,setToken}=useAuth();
 
    return(
 
-    <div className="flex flex-col items-center
-     bg-slate-900 text-white p-4 mt-2 ml-2 mr-2 rounded-lg
-     sticky top-2 z-50">
+    <div className="bg-slate-900 text-white p-4 sticky top-0 z-50">
 
 
         {
 
             token?   
 
-         <div className="flex flex-wrap gap-4 items-center justify-center">
+         <div className="hidden flex justify-center gap-3 flex-wrap">
 
-            <div>
+            <h1 className="text-xl font-bold text-center"
+            >🚀MERN Social</h1>
 
-                <img 
-                src={profile.profilePic ||
-                    "/user.png"}
-                    alt="profile"
-                    className="w-14 h-14 rounded-full
-                border-2 border-blue-400 object-cover ml-8"
-                    />
+           
 
-                    <p className="text-sm text-gray-300">
-                        {profile.email}
-                    </p>
-                </div>
-
-            <Link className="h-12 min-w-[140px] flex items-center 
-            justify-center bg-blue-500 rounded-lg hover:scale-105 
-            transition-all duration-300 font-semibold"
+            <Link className="px-4 py-2 rounded-lg hover:bg-slate-700 transition"
             
             to="/profile">
             
@@ -95,60 +81,33 @@ const {token,setToken}=useAuth();
 
             </Link>
             
-            <Link className="h-12 min-w-[140px] flex items-center 
-            justify-center bg-green-500 rounded-lg hover:scale-105 
-            transition-all duration-300 font-semibold cursor-pointer"
+            <Link className="px-4 py-2 rounded-lg hover:bg-slate-700 transition"
             to="/">
 
             🏠Home
 
             </Link>
 
-            <Link className="h-12 min-w-[140px] flex items-center 
-            justify-center bg-purple-500 rounded-lg hover:scale-105 
-            transition-all duration-300 font-semibold cursor-pointer"
+            <Link className="px-4 py-2 rounded-lg hover:bg-slate-700 transition"
             to="/create-post">
 
             ✍️Create Post
             
             </Link>
 
-            <Link className="h-12 min-w-[140px] flex items-center 
-            justify-center bg-cyan-600 rounded-lg hover:scale-105 
-            transition-all duration-300 font-semibold cursor-pointer"
-            to="/posts">
-            
-            📰Posts
-
-            </Link>
-
-            <Link className="h-12 min-w-[140px] flex items-center 
-            justify-center bg-pink-600 rounded-lg hover:scale-105 
-            transition-all duration-300 font-semibold cursor-pointer"
+            <Link className="px-4 py-2 rounded-lg hover:bg-slate-700 transition"
             to="/feed">
             
            🌏 Feed
 
             </Link>
 
-             <Link className="h-12 min-w-[140px] flex items-center 
-            justify-center bg-amber-500 p-5 rounded-lg hover:scale-105
-             transition-all duration-300 font-semibold cursor-pointer"
-            to="/change-password">
-
-            🔄Change Password
-
-            </Link>
-
-
 
             <button 
             
             onClick={handleLogout}
             
-            className="h-12 min-w-[140px] flex items-center 
-            justify-center bg-red-500 rounded-lg hover:scale-105
-            transition-all duration-300 font-semibold cursor-pointer"
+            className="px-4 py-2 rounded-lg hover:bg-slate-700 transition"
 
             >
                 🚪Logout
@@ -188,6 +147,51 @@ const {token,setToken}=useAuth();
 
             </>
         }
+        <div className="fixed bottom-4 left-1/2-translate-x-1/2
+         w-[95%] max-w-md bg-slate-900 text-white 
+         flex justify-around item-center py-3
+        rounded-2xl shadow-2xl z-50">
+
+            <NavLink to="/" className={({isActive})=>
+            isActive
+            ? "text-2xl p-2 bg-blue-500 rounded-full"
+            : "text-2xl p-2"
+            }
+            >
+                🏠
+            </NavLink>
+
+            <NavLink to="/feed" className={({isActive})=>
+            isActive
+            ? "text-2xl p-2 bg-blue-500 rounded-full"
+            : "text-2xl p-2"
+            }
+            >
+                🌏
+            </NavLink>
+
+            <NavLink to="/create-post" className={({isActive})=>
+            isActive
+            ? "text-2xl p-2 bg-blue-500 rounded-full"
+            : "text-2xl p-2"
+            }
+            >
+                ➕
+            </NavLink>
+
+            <NavLink to="/profile" className={({isActive})=>
+            isActive
+            ? "text-2xl p-2 bg-blue-500 rounded-full"
+            : "text-2xl p-2"
+            }
+            >
+                👤
+            </NavLink>
+
+            <button onClick={handleLogout} className="text-2xl p-2">
+                🚪
+            </button>
+        </div>
 
     </div>
    );

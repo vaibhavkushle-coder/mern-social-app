@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Input from "../components/input";
+import { useNavigate } from "react-router-dom";
 
 function Profile(){
 
@@ -8,6 +9,8 @@ function Profile(){
     const [isEditing,setIsEditing]=useState(false);
     const [loading,setLoading]=useState(false);
     const [image,setImage]=useState(null);
+
+    const navigate = useNavigate();
     
 
     useEffect(()=>{
@@ -103,7 +106,7 @@ setProfile({
     return(
 
         <div className="p-10 min-h-screen flex justify-center
-        items-center bg-gray-100 p-5">
+        items-center bg-gray-100 p-5 pb-24">
 
         <div className="bg-white p-8 rounded-xl shadow-lg 
         max-w-md w-full hover:shadow-2xl transition-all
@@ -120,13 +123,15 @@ setProfile({
             <img
             src={profile.profilePic}
             className="w-28 h-28 rounded-full mx-auto
-            mb-4 object-cover border-4 border-blue-500"
+            object-cover border-4 border-blue-500"
             />
         ) : (
-            <div className="text-6xl text-center mb-4">
+            <div className="text-6xl text-center ">
                 👤</div>
         )
     }
+    <p className="text-center text-gray-500 mb-4"
+    >@{profile.name}</p>
 
     <label className="cursor-pointer bg-gray-200
     px-4 py-2 rounded-lg block
@@ -150,6 +155,9 @@ setProfile({
     </button>
 
     <div className="bg-gray-50 border rounded-lg p-4 mb-4">
+
+        <p className="font-semibold text-lg"
+        >👤 {profile.name}</p>
 
 <p >
     
@@ -197,7 +205,7 @@ setProfile({
         duration-300 disabled={loading}"
         onClick={handleSave}
         >
-            {loading?"Seving...":"✔️ Save"}
+            {loading?"Saving...":"✔️ Save"}
         </button>
 
         <button className="bg-gray-500 text-white px-4 py-2 
@@ -213,6 +221,23 @@ setProfile({
         </div>
     )
 }
+<button
+className="bg-cyan-600 text-white p-3
+rounded-lg w-full mt-3
+hover:scale-105 transition"
+onClick={()=>navigate("/posts")}
+>
+   📄 My Posts
+</button>
+
+<button
+className="bg-amber-500 text-white p-3
+rounded-lg w-full mt-3
+hover:scale-105 transition"
+onClick={()=>navigate("/change-password")}
+>
+   🔄️ Change Password
+</button>
         </div>
 
         </div>
