@@ -47,7 +47,9 @@ app.get("/",(req,res)=>{
 
 app.get("/profile", authMiddleware, async (req, res) => {
 
-    const user = await User.findById(req.user.id);
+    const user = await User.findById(req.user.id)
+    .populate("followers","name email profilePic")
+    .populate("following","name email profilePic");
 
     res.json({
         message: "Profile data",

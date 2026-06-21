@@ -9,6 +9,8 @@ function Profile(){
     const [isEditing,setIsEditing]=useState(false);
     const [loading,setLoading]=useState(false);
     const [image,setImage]=useState(null);
+    const [showFollowers,setShowFollowers]=useState(false);
+    const [showFollowing,setShowFollowing]=useState(false);
 
     const navigate = useNavigate();
     
@@ -167,13 +169,28 @@ setProfile({
     
     </p>
 
-    <p>
-       👥 Followers: {profile.followers?.length || 0}
-    </p>
+   <div className="flex gap-4 mt-3 flex-wrap">
 
-    <p>
+    <button
+    className="bg-blue-100 px-3 py-2 
+    rounded-lg hover:bg-green-200 transition"
+    onClick={()=>{
+        setShowFollowers(!showFollowers);
+        setShowFollowing(false);
+    }}>
+       👥 Followers: {profile.followers?.length || 0}
+    </button>
+    
+    <button 
+    className="bg-green-100 px-3 py-2
+    rounded-lg hover:bg-green-200 transition"
+    onClick={()=>{
+        setShowFollowing(!showFollowing);
+        setShowFollowers(false);
+    }}>
        ➡️ Following: {profile.following?.length || 0}
-    </p>
+    </button>
+   </div>
 
     {
         isEditing && (
@@ -211,6 +228,40 @@ setProfile({
     </p>
 
     </div>
+
+    {
+        showFollowers && (
+            <div className="bg-white border rounded-lg p-4 mb-4">
+
+                <h2 className="font-bold mb-3">👥 Followers</h2>
+
+                {
+                    profile.followers?.length > 0 ? (
+                        
+                        profile.followers.map((user)=>(
+                            <div
+                            key={user._id}
+                            className="flex item-center gap-3 border-b py-2"
+                            >
+                                <img
+                                src={user.profilePic || "/user.png"}
+                                alt="profile"
+                                />
+
+                                <div>
+                                    <p>{user.name}</p>
+                                    <p>{user.email}</p>
+
+                                    </div>
+                                    </div>
+                        ))
+                    ) : (
+                        <p>No followers yet</p>
+                    )
+                }
+            </div>
+        )
+    }
 
 {
     !isEditing?(
