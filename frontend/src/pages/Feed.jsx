@@ -9,6 +9,7 @@ function Feed(){
     const [search,setSearch] = useState("");
     const [loading,setLoading] = useState(true);
     const [following,setFollwing] = useState([]);
+    const [currentUserId,setCurrentUserId] = useState("");
 
     useEffect(()=>{
         getFeed();
@@ -41,6 +42,7 @@ function Feed(){
             }
         );
         setFollwing(response.data.user.following);
+        setCurrentUserId(response.data.user._id);
     }
 
     async function handleLike(id){
@@ -181,6 +183,8 @@ function Feed(){
                         <p className="font-semibold text-gray-700"
                         >{post.userId?.name}</p>
 
+                         {post.userId?._id !== currentUserId && (
+                    
                         <button
                         className={`px-3 py-1 rounded-lg text-sm 
                             text-white ${
@@ -195,6 +199,7 @@ function Feed(){
                         >
                          {isFollowing ? "✅ Following" : "➕ Follow"}
                         </button>
+                         )}
 
                         </div>
 

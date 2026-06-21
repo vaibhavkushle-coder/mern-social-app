@@ -113,11 +113,12 @@ setProfile({
         max-w-md w-full hover:shadow-2xl transition-all
         duration-300">
 
-<h1 className="text-3xl font-bold mb-4">
+<h1 className="text-3xl font-bold mb-4 text-center">
     
     Profile
     
     </h1>
+
 
     {
         profile.profilePic ? (
@@ -167,11 +168,11 @@ setProfile({
     </p>
 
     <p>
-       👥 Followers: {profile.followers?.lenght || 0}
+       👥 Followers: {profile.followers?.length || 0}
     </p>
 
     <p>
-       ➡️ Following: {profile.following?.lengh || 0}
+       ➡️ Following: {profile.following?.length || 0}
     </p>
 
     {

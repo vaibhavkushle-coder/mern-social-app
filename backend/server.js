@@ -158,6 +158,13 @@ app.put("/change-password",authMiddleware,async(req,res)=>{
 app.put("/follow/:id",authMiddleware,
     async(req,res)=>{
 
+        
+        if(req.user.id === req.params.id){
+            return res.status(400).json({
+                message:"You cannot follow yourself"
+            });
+        }
+
         const userToFollow = await
         User.findById(req.params.id);
 
@@ -176,6 +183,7 @@ app.put("/follow/:id",authMiddleware,
                 message:"Already following"
             });
         }
+
 
         currentUser.following.push(userToFollow._id);
         userToFollow.followers.push(currentUser._id);
