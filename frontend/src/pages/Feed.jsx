@@ -152,9 +152,57 @@ function Feed(){
 
             {
                 suggestedUsers.length > 0 && (
-                    <div>
+                    <div className="bg-white rounded-xl
+                    shadow-lg p-4 mb-5 max-w-xl mx-autho">
 
-                        <h2>People to Follow</h2>
+                        <h2 className="text-lg font-bold mb-3"
+                        >People to Follow</h2>
+
+                        {
+                            suggestedUsers.map((user)=>(
+                                <div
+                                key={user._id}
+                                className="flex items-center 
+                                justify-between border-b py-3"
+                                >
+                                    <div className="flex items-center gap-3">
+
+                                    {user.profilePic ? (
+                                        <img
+                                        src={user.profilePic}
+                                        alt="profile"
+                                        className="w-10 h-10 rounded-full
+                                        object-cover border"
+                                        />
+
+                                    ) : (
+                                        <div className="w-12 h-12 rounded-full
+                                        bg-gray-300 flex items-center
+                                        justify-center text-xl">
+                                        👤
+                                        </div>
+                                    )}
+
+                                        <div>
+                                            <p className="font-semibold"
+                                            >{user.name}</p>
+
+                                            <p className="text-sm text-gray-500"
+                                            >{user.email}</p>
+                                        </div>
+                                    </div>
+
+                                    <button
+                                    className="bg-blue-500 text-white 
+                                    px-3 py-1 rounded-lg text-sm hover:bg-black"
+                                    onClick={()=>handleFollow(user._id)}
+                                    >
+                                       ➕ Follow
+                                    </button>
+
+                                </div>
+                            ))
+                        }
                     </div>
                 )
             }

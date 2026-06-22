@@ -160,6 +160,8 @@ app.put("/change-password",authMiddleware,async(req,res)=>{
 app.put("/follow/:id",authMiddleware,
     async(req,res)=>{
 
+        try{
+
         
         if(req.user.id === req.params.id){
             return res.status(400).json({
@@ -179,8 +181,12 @@ app.put("/follow/:id",authMiddleware,
             });
         }
 
-        if(currentUser.following.includes(userToFollow._id)){
+        const alreadyFollowing = 
+        currentUser.following.some(
+            (id) => id.toString() === userToFollow._id.toString()
+        );
 
+        if(alreadyFollowing) {
             return res.status(400).json({
                 message:"Already following"
             });
@@ -196,6 +202,13 @@ app.put("/follow/:id",authMiddleware,
         res.json({
             message: "User followed successfully"
         });
+
+    }catch(error) {
+        console.log("FOLLOW ERROR =>" , error);
+        res.status(500).json({
+            message:"Error following user"
+        });
+    }
     }
 );
 
@@ -229,6 +242,8 @@ app.get("/suggested-users",authMiddleware,
 app.put("/unfollow/:id",authMiddleware,
     async(req,res)=>{
 
+        try{
+
         const userToUnfollow = await 
         User.findById(req.params.id);
 
@@ -236,13 +251,16 @@ app.put("/unfollow/:id",authMiddleware,
         User.findById(req.user.id);
     
 
-    if(! currentUser.following.includes(userToUnfollow._id)){
+      const isFollowing =
+      currentUser.following.some(
+        (id) => id.toString() === userToUnfollow._id.toString()
+      );
 
+      if (!isFollowing){
         return res.status(400).json({
-            message:"you are not following this user"
-        });
-    }
-
+            message:"You are not following this user"
+        })
+      }
     currentUser.following = 
     currentUser.following.filter(
         (id) => id.toString() !==
@@ -261,6 +279,13 @@ app.put("/unfollow/:id",authMiddleware,
     res.json({
         message:"User unfollowed successfully"
     });
+
+} catch (error) {
+    console.log("UNFOLLOW ERROR =>" , error);
+    res.status(500).json({
+        message:"Error unfollowing user"
+    });
+}
 
 }
 );
