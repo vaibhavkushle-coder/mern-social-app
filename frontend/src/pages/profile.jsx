@@ -246,17 +246,55 @@ setProfile({
                                 <img
                                 src={user.profilePic || "/user.png"}
                                 alt="profile"
+                                className="w-10 h-10 rounded-full object-cover"
                                 />
 
                                 <div>
-                                    <p>{user.name}</p>
-                                    <p>{user.email}</p>
+                                    <p className="font-semibold">{user.name}</p>
+                                    <p className="text-sm  text-gray-500">{user.email}</p>
 
                                     </div>
                                     </div>
                         ))
                     ) : (
-                        <p>No followers yet</p>
+                        <p className="text-gray-500">No followers yet</p>
+                    )
+                }
+            </div>
+        )
+    }
+
+    {
+        showFollowing && (
+            <div className="bg-white border rounded-lg p-4 mb-4"> 
+
+                <h2 className="font-bold mb-3">➡️ Following</h2>
+
+                {
+                    profile.following?.length> 0 ? (
+                        profile.following.map((user)=>(
+                            <div
+                            key={user._id}
+                            className="flex item-center gap-3 border-b py-2"
+                            >
+                                <img
+                                src={user.profilePic || "/user.png"}
+                                alt="profile"
+                                className="w-10 h-10 rounded-full object-cover"
+                                />
+
+                                <div>
+                                    <p className="font-semibold"
+                                    >{user.name}</p>
+
+                                    <p className="text-sm text-gray-500"
+                                    >{user.email}</p>
+
+                                    </div>
+                                    </div>
+                        ))
+                    ) : (
+                        <p className="text-gray-500">Not following anyone yet</p>
                     )
                 }
             </div>

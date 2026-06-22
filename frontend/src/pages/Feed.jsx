@@ -10,10 +10,12 @@ function Feed(){
     const [loading,setLoading] = useState(true);
     const [following,setFollwing] = useState([]);
     const [currentUserId,setCurrentUserId] = useState("");
+    const [suggestedUsers,setSuggestedUsers] = useState([]);
 
     useEffect(()=>{
         getFeed();
         getProfile();
+        getSuggestedUsers();
     },[]);
 
     async function getFeed(){
@@ -91,6 +93,7 @@ function Feed(){
         alert(response.data.message);
         getFeed();
         getProfile();
+        getSuggestedUsers();
     }
 
     async function handleUnfollow(userId){
@@ -113,6 +116,23 @@ function Feed(){
         getProfile();
     }
 
+    async function getSuggestedUsers(){
+        
+        const token = localStorage.getItem("token");
+
+        const response = await axios.get(
+
+            "https://mern-social-app-xdit.onrender.com/suggested-users",
+            {
+                headers:{
+                    Authorization: token
+                }
+            }
+        );
+
+        setSuggestedUsers(response.data);
+    }
+
      const filteredPosts =
            posts.filter((post)=>
            
@@ -129,6 +149,15 @@ function Feed(){
 
             <h1 className="text-center font-bold"
             >🌏 Public Feed</h1>
+
+            {
+                suggestedUsers.length > 0 && (
+                    <div>
+
+                        <h2>People to Follow</h2>
+                    </div>
+                )
+            }
 
             <Input
             type="text"
