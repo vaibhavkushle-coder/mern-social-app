@@ -199,6 +199,33 @@ app.put("/follow/:id",authMiddleware,
     }
 );
 
+app.get("/suggested-users",authMiddleware,
+    async(req,res)=>{
+        try{
+            const currentUser = await
+            User.findById(req.user.id);
+
+            const suggestedUsers = await
+            User.find({
+                _id: {
+                    $ne: req.user.id,
+                    $nin: currentUser.following
+                }
+            })
+
+            .select("name email profilePic");
+
+            res.json(suggestedUsers);
+
+        } catch(error) {
+            console.log(error);
+            res.status(500).json({
+                message:"Error fetching suggested users"
+            });
+        }
+    }
+);
+
 app.put("/unfollow/:id",authMiddleware,
     async(req,res)=>{
 
@@ -297,7 +324,7 @@ app.get("/feed",async(req,res)=>{
 
     const posts = await Post.find()
     .populate("userId","name email profilePic")
-    .sort({ createAt: -1 });
+    .sort({ createdAt: -1 });
 
     res.json(posts);
 
