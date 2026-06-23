@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Input from "../components/input";
+import { useNavigate } from "react-router-dom";
 
 function Feed(){
 
@@ -11,6 +12,8 @@ function Feed(){
     const [following,setFollwing] = useState([]);
     const [currentUserId,setCurrentUserId] = useState("");
     const [suggestedUsers,setSuggestedUsers] = useState([]);
+
+    const navigate = useNavigate();
 
     useEffect(()=>{
         getFeed();
@@ -153,7 +156,7 @@ function Feed(){
             {
                 suggestedUsers.length > 0 && (
                     <div className="bg-white rounded-xl
-                    shadow-lg p-4 mb-5 max-w-xl mx-autho">
+                    shadow-lg p-4 mb-5 max-w-xl mx-auto">
 
                         <h2 className="text-lg font-bold mb-3"
                         >People to Follow</h2>
@@ -165,9 +168,12 @@ function Feed(){
                                 className="flex items-center 
                                 justify-between border-b py-3"
                                 >
-                                    <div className="flex items-center gap-3">
+                                    <div className="flex items-center gap-3 cursor-pointer"
+                                    onClick={()=>navigate(`/user/${user._id}`)}
+                                    >
+                                        
 
-                                    {user.profilePic ? (
+                                    { user.profilePic ? (
                                         <img
                                         src={user.profilePic}
                                         alt="profile"
@@ -190,6 +196,7 @@ function Feed(){
                                             <p className="text-sm text-gray-500"
                                             >{user.email}</p>
                                         </div>
+                                       
                                     </div>
 
                                     <button

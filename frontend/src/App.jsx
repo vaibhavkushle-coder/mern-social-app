@@ -12,6 +12,7 @@ import ChangePassword from './pages/ChangePassword';
 import CreatePost from './pages/CreatePost';
 import Post from './pages/Post';
 import Feed from './pages/Feed';
+import UserProfile from './pages/UserProfile';
 function App(){
 
 
@@ -107,6 +108,12 @@ function App(){
     <Navbar/>
    <Feed/>
    </>
+  }/>
+
+  <Route
+  path="/user/:id"
+  element={
+    <UserProfile/>
   }/>
 
     </Routes>

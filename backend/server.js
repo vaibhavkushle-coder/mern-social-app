@@ -255,7 +255,7 @@ app.get("/user/:id",authMiddleware,async(req,res)=>{
         }
 
         const posts = await
-        User.find({ userId: req.params.id})
+        Post.find({ userId: req.params.id})
         .populate("userId","name email profilePic")
         .sort({ createdAt: -1 });
 
