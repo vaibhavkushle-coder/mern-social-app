@@ -239,6 +239,39 @@ app.get("/suggested-users",authMiddleware,
     }
 );
 
+app.get("/user/:id",authMiddleware,async(req,res)=>{
+
+    try{
+
+        const user = await
+        User.findById(req.params.id)
+        .populate("followers","name email profilePic")
+        .populate("following","name email profilePic");
+
+        if(!user){
+            return res.status(404).json({
+                message:"User not found"
+            });
+        }
+
+        const posts = await
+        User.find({ userId: req.params.id})
+        .populate("userId","name email profilePic")
+        .sort({ createdAt: -1 });
+
+        res.json({
+            user,
+            posts
+        });
+
+    }catch(error){
+        console.log(error);
+        res.status(500).json({
+            message:"Error fetching user profile"
+        });
+    }
+});
+
 app.put("/unfollow/:id",authMiddleware,
     async(req,res)=>{
 
