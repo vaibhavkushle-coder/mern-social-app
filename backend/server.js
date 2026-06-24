@@ -424,23 +424,25 @@ app.put("/post/:id",authMiddleware,async(req,res)=>{
 
 });
 
-app.put("/post/like/:id",authMiddleware,async(req,res) => {
-
-    try{
-
+app.put("/post/like/:id", authMiddleware, async (req, res) => {
+    try {
         const post = await Post.findById(req.params.id);
 
-        if(!post){
+        if (!post) {
             return res.status(404).json({
-                message:"Post not found"
+                message: "Post not found"
             });
+        }
+        
+        if (!Array.isArray(post.likes)) {
+            post.likes = [];
         }
 
         const alreadyLiked = post.likes.some(
             (id) => id.toString() === req.user.id
         );
 
-        if(alreadyLiked){
+        if (alreadyLiked) {
             post.likes = post.likes.filter(
                 (id) => id.toString() !== req.user.id
             );
@@ -448,7 +450,7 @@ app.put("/post/like/:id",authMiddleware,async(req,res) => {
             await post.save();
 
             return res.json({
-                message:"Post unliked"
+                message: "Post unliked"
             });
         }
 
@@ -456,13 +458,14 @@ app.put("/post/like/:id",authMiddleware,async(req,res) => {
         await post.save();
 
         res.json({
-            message:"Post liked"
+            message: "Post liked"
         });
 
-    } catch(error){
-        console.log("Like Error =>",error);
+    } catch (error) {
+        console.log("LIKE ERROR =>", error);
         res.status(500).json({
-            message:"Error liking post"
+            message: "Error liking post",
+            error: error.message
         });
     }
 });
