@@ -424,18 +424,47 @@ app.put("/post/:id",authMiddleware,async(req,res)=>{
 
 });
 
-app.put("/post/like/:id",async(req,res)=>{
+app.put("/post/like/:id",authMiddleware,async(req,res) => {
 
-    const post = await Post.findById(req.params.id);
+    try{
 
-    post.likes += 1;
+        const post = await Post.findById(req.params.id);
 
-    await post.save();
+        if(!post){
+            return res.status(404).json({
+                message:"Post not found"
+            });
+        }
 
-    res.json({
-        message:"Post liked"
-    });
+        const alreadyLiked = post.likes.some(
+            (id) => id.toString() === req.user.id
+        );
 
+        if(!alreadyLiked){
+            post.likes = post.likes.filter(
+                (id) => id.toString !== req.user.id
+            );
+
+            await post.save();
+
+            return res.json({
+                message:"Post unliked"
+            });
+        }
+
+        post.likes.push(req.user.id);
+        await post.save();
+
+        res.json({
+            message:"Post liked"
+        });
+
+    } catch(erroe){
+        console.log("Like Error =>",error);
+        res.status(500).json({
+            message:"Error liking post"
+        });
+    }
 });
 
 app.post("/post/comment/:id",authMiddleware,async(req,res)=>{

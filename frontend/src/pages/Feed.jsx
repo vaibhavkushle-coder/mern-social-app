@@ -51,8 +51,17 @@ function Feed(){
     }
 
     async function handleLike(id){
+
+       const token = localStorage.getItem("token");
+
         await axios.put(
-            `https://mern-social-app-xdit.onrender.com/post/like/${id}`
+            `https://mern-social-app-xdit.onrender.com/post/like/${id}`,
+            {},
+            {
+                headers:{
+                    Authorization: token
+                }
+            }
         );
         getFeed();
     }
@@ -245,6 +254,10 @@ function Feed(){
 
                     const isFollowing = 
                     following.includes(post.userId?._id);
+
+                    const isLiked = post.likes?.some(
+                        (id) => id.toString() === currentUserId
+                    );
                     
                     return(
 
@@ -252,7 +265,10 @@ function Feed(){
                     className="bg-white p-5 rounded-xl shadow-lg
                     mb-5 max-w-xl mx-auto hover:shadow-2xl transition">
 
-                        <div className="flex items-center gap-3 mb-3">
+                        <div className="flex items-center gap-3 mb-3
+                        cursor-pointer"
+                        onClick={()=>navigate(`/user/${post.userId?._id}`)}
+                        >
 
                          
 
@@ -301,11 +317,13 @@ function Feed(){
                         <div className="flex gap-4 mt-2">
 
                         <button
-                        className="bg-pink-100 px-3 py-1 
-                        rounded-lg mt-2 mb-1
-                        hover:scale-105 transition"
+                        className={`px-3 py-1 rounded-lg mt-2 mb-1 
+                            hover:scale-1-5 transition ${
+                                isLiked? "bg-red-500 text-white" :
+                                "bg-pink-100 text-black"
+                            }`}
                         onClick={()=>handleLike(post._id)}>
-                           ❤️{post.likes}
+                           ❤️{post.likes?.length || 0}
                         </button>
 
                        

@@ -50,55 +50,78 @@ function UserProfile(){
     }
 
     return(
-        <div>
-            <div>
-                <div>
+        <div className="min-h-screen 
+        bg-gray-100 p-5 pb-24">
+
+            <div className="bg-white p-6 
+            rounded-xl shadow-lg max-w-2xl mx-auto mb-6 ">
+
+                <div className="flex items-center gap-4 mb-4">
                     {
                         user?.profilePic ? (
                            <img
                            src={user.profilePic}
                            alt="profile"
+                           className="w-20 h-20 rounded-full object-cover border-4 
+                           border-blue-500"
                            />
 
                         ) : (
-                            <div>👤</div>
+                            <div className="w-20 h-20 rounded-full
+                            bg-gray-300 flex items-center justify-center text-3xl"
+                            >👤</div>
                         )
                     }
 
                     <div>
-                        <h1>{user?.name}</h1>
-                        <p>{user?.email}</p>
+
+                        <h1 className="text-2xl font-bold"
+                        >{user?.name}</h1>
+
+                        <p className="text-gray-500"
+                        >{user?.email}</p>
+
                     </div>
                 </div>
 
-                <div >
+                <div className="flex gap-6 mt-4 text-lg font-semibold">
+                    
                     <p>👥 Followers: {user?.followers?.length || 0}</p>
                     <p>➡️ Following: {user?.following?.length || 0}</p>
 
                 </div>
             </div>
 
-            <div>
-                <h2>📄 Posts</h2>
+            <div className="max-w-2xl mx-auto">
+
+                <h2 className="text-2xl font-bold mb-4"
+                >📄 Posts</h2>
 
                 {
                     posts.length === 0 ? (
-                        <div>
+                        <div className="bg-white p-5 rounded-xl shadow
+                        text-center text-gray-500 ">
                             No posts yet 😔
                         </div>
                     ) : (
                         posts.map((post) => (
                             <div
                             key={post._id}
+                            className="bg-white p-5 rounded-xl shadow-lg
+                            mb-5"
                             >
-                                <p>🗓️ {new Date(post.createdAt).toLocaleDateString()}</p>
+                                <p className="text-sm text-gray-500 mb-2"
+                                >🗓️ {new Date(post.createdAt).toLocaleDateString()}</p>
 
-                                <h2>{post.title}</h2>
-                                <p>{post.content}</p>
+                                <h2 className="text-xl font-bold mb-2"
+                                >{post.title}</h2>
 
-                                <div>
+                                <p className="text-gray-700 mb-3"
+                                >{post.content}</p>
 
-                                    <p>❤️ {post.likes}</p>
+                                <div className="flex gap-4 text-sm text-gray-600">
+
+                                    <p >❤️ {post.likes}</p>
                                     <p>🗨️ {post.comments?.length || 0} comments</p>
                             </div>
                             </div>
