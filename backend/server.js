@@ -440,9 +440,9 @@ app.put("/post/like/:id",authMiddleware,async(req,res) => {
             (id) => id.toString() === req.user.id
         );
 
-        if(!alreadyLiked){
+        if(alreadyLiked){
             post.likes = post.likes.filter(
-                (id) => id.toString !== req.user.id
+                (id) => id.toString() !== req.user.id
             );
 
             await post.save();
@@ -459,7 +459,7 @@ app.put("/post/like/:id",authMiddleware,async(req,res) => {
             message:"Post liked"
         });
 
-    } catch(erroe){
+    } catch(error){
         console.log("Like Error =>",error);
         res.status(500).json({
             message:"Error liking post"
