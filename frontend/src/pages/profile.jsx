@@ -11,6 +11,7 @@ function Profile(){
     const [image,setImage]=useState(null);
     const [showFollowers,setShowFollowers]=useState(false);
     const [showFollowing,setShowFollowing]=useState(false);
+    
 
     const navigate = useNavigate();
     
@@ -105,7 +106,7 @@ setProfile({
 
     }
     }
-
+    
     return(
 
         <div className="p-10 min-h-screen flex justify-center
@@ -241,7 +242,10 @@ setProfile({
                         profile.followers.map((user)=>(
                             <div
                             key={user._id}
-                            className="flex item-center gap-3 border-b py-2"
+                            className="flex items-center gap-3 
+                            border-b py-2 cursor-pointer 
+                            hover:bg-gray-100 rounded-lg px-2"
+                            onClick={()=>navigate(`/user/${user._id}`)}
                             >
                                 <img
                                 src={user.profilePic || "/user.png"}
@@ -252,6 +256,7 @@ setProfile({
                                 <div>
                                     <p className="font-semibold">{user.name}</p>
                                     <p className="text-sm  text-gray-500">{user.email}</p>
+                                    <p className="text-xs text-blue-500">View profile</p>
 
                                     </div>
                                     </div>
@@ -275,7 +280,10 @@ setProfile({
                         profile.following.map((user)=>(
                             <div
                             key={user._id}
-                            className="flex item-center gap-3 border-b py-2"
+                           className="flex items-center gap-3 
+                           border-b py-2 cursor-pointer 
+                           hover:bg-gray-100 rounded-lg px-2"
+                           onClick={()=>navigate(`/user/${user._id}`)}
                             >
                                 <img
                                 src={user.profilePic || "/user.png"}
@@ -289,6 +297,10 @@ setProfile({
 
                                     <p className="text-sm text-gray-500"
                                     >{user.email}</p>
+
+                                    <p className="text-xs text-blue-500"
+                                    >View profile</p>
+
 
                                     </div>
                                     </div>

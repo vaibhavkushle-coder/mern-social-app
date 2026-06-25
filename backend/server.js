@@ -362,7 +362,7 @@ app.get("/dashboard",authMiddleware,async(req,res)=>{
     const totalPosts = posts.length;
 
     const totalLikes = posts.reduce(
-        (sum,post) =>sum + post.likes,
+        (sum,post) =>sum + (post.likes?.length || 0),
         0
     );
 

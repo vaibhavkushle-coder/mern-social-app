@@ -9,9 +9,13 @@ function UserProfile(){
     const [user, setUser] = useState(null);
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [currentUserId,setCurrentUserId]=useState("");
+    const [isFollowing,setIsFollowing]=useState(false);
 
     useEffect(()=>{
         getUserProfile();
+        getCurrentUser();
+
     },[]);
 
 
@@ -40,6 +44,95 @@ function UserProfile(){
             setLoading(false);
         }
     }
+
+     async function getCurrentUser() {
+        try{
+
+            const token = localStorage.getItem("token");
+
+            const response = await axios.get(
+                "https://mern-social-app-xdit.onrender.com/profile",
+                {
+                    headers:{
+                        Authorization: token
+                    }
+                }
+            );
+
+            const currentUser = response.data.user;
+
+            setCurrentUserId(currentUser._id);
+
+            const alreadyFollowing = 
+            currentUser.following?.some(
+                (followedUser) =>
+                    followedUser._id?.toString() === id
+            );
+
+            setIsFollowing(alreadyFollowing);
+
+        } catch(error){
+            console.log("CURRENT USER ERROR =>",error);
+        }
+    }
+
+      async function handleFollow() {
+
+        try{
+
+            const token = localStorage.getItem("token");
+
+            const response = await axios.put(
+                `https://mern-social-app-xdit.onrender.com/follow/${id}`,
+                {},
+                {
+                    headers:{
+                        Authorization: token
+                    }
+                }
+            );
+
+            alert(response.data.message);
+
+            setIsFollowing(true);
+            getUserProfile();
+
+        } catch(error){
+            console.log("FOLLOW ERROR =>",error);
+            alert(error?.response?.data?.message || "Error following user");
+        }
+
+    }
+
+     async function handleUnfollow(){
+
+        try{
+            
+            const token = localStorage.getItem("token");
+
+            const response = await axios.put(
+                `https://mern-social-app-xdit.onrender.com/unfollow/${id}`,
+                {},
+                {
+                    headers:{
+                        Authorization: token
+                    }
+                }
+            );
+
+            alert(response.data.message);
+
+            setIsFollowing(false);
+            getUserProfile();
+
+        } catch(error){
+            console.log("UNFOLLOW ERROR =>",error);
+            alert(error?.response?.data?.message || "Error unfollowing user");
+        }
+    }
+
+
+
 
     if (loading) {
         return(
@@ -78,8 +171,23 @@ function UserProfile(){
                         <h1 className="text-2xl font-bold"
                         >{user?.name}</h1>
 
-                        <p className="text-gray-500"
-                        >{user?.email}</p>
+                        <p className="text-gray-500"> 
+                            {user?.email}</p>
+
+                        {user?._id !== currentUserId && (
+                            <button
+                            className={`mt-3 px-4 py-2
+                                rounded-lg text-white 
+                                ${
+                                    isFollowing ?
+                                    "bg-green-500" : "bg-blue-500"
+                                }`}
+                                onClick={isFollowing ?
+                                    handleUnfollow : handleFollow
+                                }>
+                                    {isFollowing ? "✅ Following" : "➕ Follow"}
+                                </button>
+                        )}
 
                     </div>
                 </div>
@@ -121,7 +229,7 @@ function UserProfile(){
 
                                 <div className="flex gap-4 text-sm text-gray-600">
 
-                                    <p >❤️ {post.likes}</p>
+                                    <p >❤️ {post.likes?.length || 0}</p>
                                     <p>🗨️ {post.comments?.length || 0} comments</p>
                             </div>
                             </div>
