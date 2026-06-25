@@ -273,6 +273,31 @@ app.get("/user/:id",authMiddleware,async(req,res)=>{
     }
 });
 
+app.get("/post/:id",authMiddleware,async(req,res)=>{
+
+    try{
+
+        const post = await
+        Post.findById(req.params.id)
+               .populate("userId","name email profilePic")
+               .populate("comments.userId","name profilePic");
+
+               if (!post){
+                return res.status(404).json({
+                    message:"Post not found"
+                });
+               }
+
+               res.json(post);
+
+    } catch(error){
+        console.log("GET SINGLE POST ERROR =>",error);
+        res.status(500).json({
+            message:"Error fetching post"
+        });
+    }
+});
+
 app.put("/unfollow/:id",authMiddleware,
     async(req,res)=>{
 
