@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import Input from "../components/input";
 
 function UserProfile(){
 
@@ -11,6 +12,7 @@ function UserProfile(){
     const [loading, setLoading] = useState(true);
     const [currentUserId,setCurrentUserId]=useState("");
     const [isFollowing,setIsFollowing]=useState(false);
+    const [commentInputs,setCommentInputs]=useState({});
 
     useEffect(()=>{
         getUserProfile();
@@ -131,7 +133,59 @@ function UserProfile(){
         }
     }
 
+    async function handleLike(postId){
 
+        try{
+            const token = localStorage.getItem("token");
+
+            await axios.put(
+                `https://mern-social-app-xdit.onrender.com/post/like/${postId}`,
+                {},
+                {
+                    headers:{
+                        Authorization: token
+                    }
+                }
+            );
+
+            getUserProfile();
+        } catch(error) {
+            console.log("USER PROFILE LIKE ERROR =>",error);
+            alert(error?.response?.data?.message || "Enter liking post");
+        }
+    }
+
+    async function handleComment(postId) {
+        try{
+
+            const token = localStorage.getItem("token");
+
+            const text = commentInputs[postId]?.trim();
+
+            if(!text) return;
+
+            await axios.post(
+                `https://mern-social-app-xdit.onrender.com/post/comment/${postId}`,
+                { text },
+                {
+                    headers:{
+                        Authorization: token
+                    }
+                }
+            );
+
+            setCommentInputs((prev) => ({
+                ...prev,
+                [postId]: ""
+            }));
+
+            getUserProfile();
+
+        } catch(error){
+            console.log("USER PROFILE COMMENT ERROR =>",error);
+            alert(error?.response.data?.message || "Error adding comment");
+        }
+    }
 
 
     if (loading) {
@@ -212,28 +266,75 @@ function UserProfile(){
                             No posts yet 😔
                         </div>
                     ) : (
-                        posts.map((post) => (
-                            <div
-                            key={post._id}
-                            className="bg-white p-5 rounded-xl shadow-lg
-                            mb-5"
-                            >
-                                <p className="text-sm text-gray-500 mb-2"
-                                >🗓️ {new Date(post.createdAt).toLocaleDateString()}</p>
+                        posts.map((post) =>{
+                            const isLiked = post.likes?.some(
+                                (likeUserId) =>
+                                    likeUserId.toString() === currentUserId
+                            );
+return (
+    <div
+        key={post._id}
+        className="bg-white p-5 rounded-xl shadow-lg mb-5"
+    >
+        <p className="text-sm text-gray-500 mb-2">
+            🗓️ {new Date(post.createdAt).toLocaleDateString()}
+        </p>
 
-                                <h2 className="text-xl font-bold mb-2"
-                                >{post.title}</h2>
+        <h2 className="text-xl font-bold mb-2">{post.title}</h2>
 
-                                <p className="text-gray-700 mb-3"
-                                >{post.content}</p>
+        <p className="text-gray-700 mb-3">{post.content}</p>
 
-                                <div className="flex gap-4 text-sm text-gray-600">
+        {/* Like + comment count */}
+        <div className="flex gap-4 text-sm text-gray-600 items-center">
+            <button
+                className={`px-3 py-1 rounded-lg ${
+                    isLiked
+                        ? "bg-red-300 text-black"
+                        : "bg-pink-100 text-black"
+                }`}
+                onClick={() => handleLike(post._id)}
+            >
+                {isLiked ? "❤️" : "🤍"} {post.likes?.length || 0}
+            </button>
 
-                                    <p >❤️ {post.likes?.length || 0}</p>
-                                    <p>🗨️ {post.comments?.length || 0} comments</p>
-                            </div>
-                            </div>
-                        ))
+            <p>🗨️ {post.comments?.length || 0} comments</p>
+        </div>
+
+        {/* Comment input */}
+        <Input
+            value={commentInputs[post._id] || ""}
+            onChange={(e) =>
+                setCommentInputs((prev) => ({
+                    ...prev,
+                    [post._id]: e.target.value
+                }))
+            }
+            placeholder="Write a comment..."
+        />
+
+        {/* Comment button */}
+        {(commentInputs[post._id] || "").trim() !== "" && (
+            <button
+                className="bg-green-500 text-white p-2 rounded-lg mt-2"
+                onClick={() => handleComment(post._id)}
+            >
+                🗨️ Comment
+            </button>
+        )}
+
+        {/* Last 2 comments */}
+        {post.comments?.slice(-2).map((comment, index) => (
+            <div
+                key={index}
+                className="bg-green-100 p-2 rounded-lg mt-2"
+            >
+                <p>
+                    <b>{comment.userId?.name || "User"}</b>: {comment.text}
+                </p>
+            </div>
+        ))}
+    </div>
+);})
                     )
                 }
             </div>

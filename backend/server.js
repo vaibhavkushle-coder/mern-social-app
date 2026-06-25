@@ -257,6 +257,7 @@ app.get("/user/:id",authMiddleware,async(req,res)=>{
         const posts = await
         Post.find({ userId: req.params.id})
         .populate("userId","name email profilePic")
+        .populate("comments.userId","name profilePic")
         .sort({ createdAt: -1 });
 
         res.json({
