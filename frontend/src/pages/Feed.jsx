@@ -366,13 +366,13 @@ function Feed() {
 
                 
                             {post.comments?.slice(-2).map((comment, index) => (
-                                <p
+                                <div
                                     key={index}
                                     className="bg-gray-100 p-2 rounded-lg mt-2"
                                 >
                                     <div><b>{comment.userId?.name}</b>:
                                     {comment.text}</div>
-                                </p>
+                                </div>
                             ))}
                         </div>
                     );

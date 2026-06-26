@@ -107,6 +107,30 @@ function PostDetail(){
         }
     }
 
+    async function handleDeleteComment(commentId) {
+
+        try{
+
+            const token = localStorage.getItem("token");
+
+            const response = await axios.delete(
+                `https://mern-social-app-xdit.onrender.com/post/comment/${id}/${commentId}`,
+                {
+                    headers:{
+                        Authorization: token
+                    }
+                }
+            );
+
+            alert(response.data.message);
+
+            getPost();
+        } catch(error){
+            console.log("DELETE COMMENT ERROR =>",error);
+            alert(error?.response?.data?.message || "Error deleting comment");
+        }
+    }
+
     if (loading) {
         return <div className="text-center mt-10">
            ⌛ Loading Post...
@@ -241,7 +265,22 @@ function PostDetail(){
                                     </p>
                                 </div>
 
-                                <p>{comment.text}</p>
+                                <div className="flex justify-between items-center"
+                                >
+                                    <p>{comment.text}</p>
+
+                                    { comment.userId?._id === currentUserId && (
+                                        <button
+                                        className="text-red-500 hover:bg-red-400 
+                                        cursor-pointer bg-red-700 p-1 rounded-lg "
+                                        onClick={() =>
+                                            handleDeleteComment(comment._id)
+                                        }>
+                                            🗑️
+                                        </button>
+                                    )}
+
+                                    </div>
                                 </div>
                         ))
 

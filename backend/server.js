@@ -393,7 +393,7 @@ app.get("/dashboard",authMiddleware,async(req,res)=>{
     );
 
     const totalComments = posts.reduce(
-        (sum,post) => sum + post.comments.length,
+        (sum,post) => sum + (post.comments?.length || 0),
         0
     );
 
@@ -408,6 +408,7 @@ app.get("/feed",async(req,res)=>{
 
     const posts = await Post.find()
     .populate("userId","name email profilePic")
+    .populate("comments.userId","name profilePic")
     .sort({ createdAt: -1 });
 
     res.json(posts);
