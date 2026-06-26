@@ -273,7 +273,11 @@ function Feed() {
                     return (
                         <div
                             key={post._id}
-                            className="bg-white p-5 rounded-xl shadow-lg mb-5 max-w-xl mx-auto hover:shadow-2xl transition"
+                            onClick={()=>navigate(`/post/${post._id}`)}
+
+                            className="bg-white p-5 rounded-xl 
+                            shadow-lg mb-5 max-w-xl mx-auto 
+                            hover:shadow-2xl transition cursor-pointer"
                         >
             
                             <div
@@ -322,7 +326,10 @@ function Feed() {
                                             ? "bg-red-300 text-black"
                                             : "bg-pink-100 text-black"
                                     }`}
-                                    onClick={() => handleLike(post._id)}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                         handleLike(post._id);
+                                    }}
                                 >
                                     {isLiked ? "❤️" : "🤍"} {post.likes?.length || 0}
                                 </button>
@@ -332,7 +339,7 @@ function Feed() {
                                 </p>
                             </div>
 
-            
+                             <div onClick={(e) => e.stopPropagation()}>
                             <Input
                                 value={commentInputs[post._id] || ""}
                                 onChange={(e) =>
@@ -343,11 +350,15 @@ function Feed() {
                                 }
                                 placeholder="Write a comment..."
                             />
+                            </div>
 
                             {(commentInputs[post._id] || "").trim() !== "" && (
                                 <button
                                     className="bg-green-500 text-white p-2 rounded-lg mt-2"
-                                    onClick={() => handleComment(post._id)}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                         handleComment(post._id);
+                                    }}
                                 >
                                     💬 Comment
                                 </button>
@@ -359,8 +370,8 @@ function Feed() {
                                     key={index}
                                     className="bg-gray-100 p-2 rounded-lg mt-2"
                                 >
-                                    <p><b>{comment.userId?.name}</b>:
-                                    {comment.text}</p>
+                                    <div><b>{comment.userId?.name}</b>:
+                                    {comment.text}</div>
                                 </p>
                             ))}
                         </div>

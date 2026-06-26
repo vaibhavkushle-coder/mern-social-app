@@ -13,6 +13,7 @@ import CreatePost from './pages/CreatePost';
 import Post from './pages/Post';
 import Feed from './pages/Feed';
 import UserProfile from './pages/UserProfile';
+import PostDetail from './pages/PostDetail';
 function App(){
 
 
@@ -113,7 +114,21 @@ function App(){
   <Route
   path="/user/:id"
   element={
-    <UserProfile/>
+    <>
+    <Navbar/>
+        <UserProfile/>
+
+    </>
+  }/>
+
+  <Route
+  path="/post/:id"
+  element={
+    <>
+    <Navbar/>
+        <PostDetail/>
+
+    </>
   }/>
 
     </Routes>

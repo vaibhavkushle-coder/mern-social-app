@@ -424,6 +424,51 @@ app.delete("/post/:id",authMiddleware,async(req,res)=>{
 
 });
 
+app.delete("/post/comment/:postId/:commentId",authMiddleware,
+    async(req,res)=>{
+
+        try{
+
+            const post = await
+            Post.findById(req.params.postId);
+
+            if (!post){
+                return res.status(404).json({
+                    message:"Post not found"
+                });
+            }
+
+            const comment = 
+            post.comments.id(req.params.commentId);
+
+            if(! comment) {
+                return res.status(404).json({
+                    message:"Comment not found"
+                });
+            }
+
+            if (comment.userId.toString() !== req.user.id) {
+            return res.status(403).json({
+                message:"YOu can delete only your own comment"
+            });
+            }
+
+            post.comments.pull(comment._id);
+
+            await post.save();
+
+            res.json({
+                message:"Comment deleted successfully"
+            });
+
+        }catch(error){
+            console.log("DELETE COMMENT ERROR =>",error);
+            res.status(500).json({
+                message:"Server Error"
+            });
+        }
+    });
+
 app.put("/post/:id",authMiddleware,async(req,res)=>{
 
     const { title, content} = req.body;
