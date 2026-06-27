@@ -358,12 +358,9 @@ app.post("/post",authMiddleware,
    let imageUrl = "";
 
    if (req.file)  {
-    const result = await
-    cloudinary.uploader.upload(
-        `data:${req.file.mimetype};base64,$
-        {req.file.buffer.toString("base64)}`
-    );
-
+   const result = await cloudinary.uploader.upload(
+  `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`
+);
     imageUrl = result.secure_url;
    }
 

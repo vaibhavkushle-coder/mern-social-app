@@ -280,6 +280,15 @@ function PostDetail(){
                                         </button>
                                     )}
 
+                                      {post.image && (
+                                            <img
+                                            src={post.image}
+                                            alt="post"
+                                            className="w-full rounded-lg mt-3
+                                            object-cover max-h-[500px]"
+                                            />
+                                        )}
+
                                     </div>
                                 </div>
                         ))
