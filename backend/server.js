@@ -350,14 +350,28 @@ app.put("/unfollow/:id",authMiddleware,
 );
 
 
-app.post("/post",authMiddleware,async(req,res)=>{
+app.post("/post",authMiddleware,
+    upload.single("image"),async(req,res)=>{
 
     const { title, content } = req.body;
+
+   let imageUrl = "";
+
+   if (req.file)  {
+    const result = await
+    cloudinary.uploader.upload(
+        `data:${req.file.mimetype};base64,$
+        {req.file.buffer.toString("base64)}`
+    );
+
+    imageUrl = result.secure_url;
+   }
 
     const newPost = new Post({
 
         title,
         content,
+        image: imageUrl,
         userId:req.user.id
 
     });

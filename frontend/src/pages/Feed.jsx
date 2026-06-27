@@ -127,6 +127,28 @@ function Feed() {
         }
     }
 
+    async function handleDeleteComment(postId,commentId){
+        try{
+            const token = localStorage.getItem("token");
+
+            const response = await axios.delete(
+                `https://mern-social-app-xdit.onrender.com/post/comment/${postId}/${commentId}`,
+                {
+                    headers:{
+                        Authorization: token
+                    }
+                }
+            );
+
+            alert(response.data.message);
+
+            getFeed();
+        }catch(error){
+            console.log("DELETE COMMENT ERROR =>",error);
+            alert(error?.response?.data?.message || "Error deleting comment");
+        }
+    }
+
     async function handleFollow(userId) {
         try {
             const token = localStorage.getItem("token");
@@ -187,15 +209,20 @@ function Feed() {
         <div className="min-h-screen bg-gray-100 p-5 pb-24">
             <h1 className="text-center font-bold text-2xl mb-5">🌏 Public Feed</h1>
 
-            
             {suggestedUsers.length > 0 && (
-                <div className="bg-white rounded-xl shadow-lg p-4 mb-5 max-w-xl mx-auto">
+
+                <div className="bg-white rounded-xl shadow-lg
+                 p-4 mb-5 max-w-xl mx-auto">
+
                     <h2 className="text-lg font-bold mb-3">People to Follow</h2>
 
+                    
+              <div className="flex gap-4 overflow-x-auto pb-2">
                     {suggestedUsers.map((user) => (
                         <div
                             key={user._id}
-                            className="flex items-center justify-between border-b py-3"
+                            className=" min-w-[220px] bg-gray-100 rounded-lg  p-3
+                            flex  flex-col gap-2"
                         >
                             <div
                                 className="flex items-center gap-3 cursor-pointer"
@@ -230,6 +257,7 @@ function Feed() {
                             </button>
                         </div>
                     ))}
+                    </div>
                 </div>
             )}
 
@@ -334,7 +362,12 @@ function Feed() {
                                     {isLiked ? "❤️" : "🤍"} {post.likes?.length || 0}
                                 </button>
 
-                                <p className="text-sm text-gray-500 mt-2">
+                                <p className="text-sm text-gray-500 mt-2
+                                cursor-pointer hover:underline"
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    navigate(`/post/${post._id}`);
+                                }}>
                                     💬 {post.comments?.length || 0} comments
                                 </p>
                             </div>
@@ -348,6 +381,13 @@ function Feed() {
                                         [post._id]: e.target.value
                                     }))
                                 }
+                                onKeyDown={(e)=>{
+                                    if(e.key === "Enter"){
+
+                                        e.preventDefault();
+                                        handleComment(post._id);
+                                    }
+                                }}
                                 placeholder="Write a comment..."
                             />
                             </div>
@@ -370,10 +410,57 @@ function Feed() {
                                     key={index}
                                     className="bg-gray-100 p-2 rounded-lg mt-2"
                                 >
-                                    <div><b>{comment.userId?.name}</b>:
-                                    {comment.text}</div>
+                                    <div className="flex items-center gap-2 mb-1">
+                                        {comment.userId?.profilePic ? (
+                                            <img 
+                                            src={comment.userId.profilePic}
+                                            alt="profile"
+                                            className="w-8 h-8 rounded-full object-cover border"
+                                            />
+                                        ) : (
+                                            <div className="w-8 h-8 rounded-full bg-gray-300
+                                            flex items-center justify-center">
+                                                👤
+                                                </div>
+                                        )
+                                    }
+                                    <b>{comment.userId.name}</b>
+                                </div>
+                                <div className="flex justify-between items-center"
+                                onClick={(e)=> e.stopPropagation()}>
+
+                                    <p>{comment.text}</p>
+
+                                    {comment.userId?._id === currentUserId && (
+                                        <button
+                                        className="text-red-500 p-1 rounded-lg
+                                        bg-red-400 cursor-pointer
+                                        hover:bg-red-700"
+                                        onClick={(e)=>{
+                                            e.stopPropagation();
+                                            handleDeleteComment(post._id,comment._id);
+                                        }}>
+                                            🗑️
+                                        </button>
+
+                                        )}
+                                        
+                                    </div>
+                                   
                                 </div>
                             ))}
+                             {post.comments?.length > 2 && (
+                                            <button
+                                            className="text-blue-500 text-sm 
+                                            mt-2 hover:underline"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                navigate(`/post/${post._id}`);
+                                            }}
+                                            >
+                                            View all comments...
+                                            </button>
+                                        )}
                         </div>
                     );
                 })}

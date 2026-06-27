@@ -2,7 +2,8 @@ function Input({
     type,
     placeholder,
     value,
-    onChange
+    onChange,
+    onKeyDown
 }){
 
     return(
@@ -16,6 +17,8 @@ function Input({
         value={value}
 
         onChange={onChange}
+
+        onKeyDown={onKeyDown}
 
         className="w-full border border-gray-300 p-3
         rounder-lg outline-none focus:border-blue-500"

@@ -7,6 +7,7 @@ function CreatePost(){
 
     const [title,setTitle] = useState("");
     const [content,setContent] = useState("");
+    const [image,setImage] = useState(null);
     const navigate = useNavigate();
     const [loading,setLoading] = useState(false);
 
@@ -73,6 +74,13 @@ function CreatePost(){
             className="border p-3 rounded-lg w-full
             resize-none h-32 outline-none"
         />
+
+        <input
+        type="file"
+        accept="image/*"
+        onChange={(e) =>
+            setImage(e.target.files[0])
+        }/>
 
         <button className="bg-green-500 text-white p-3 rounded-lg
          mt-4 text-center hover:scale-105 transition-all w-full
