@@ -14,7 +14,7 @@ function CreatePost(){
     async function handleSubmit(){
 
         if(!title || !content){
-            alert("Fill all fields");
+          toast.success("Fill all fields");
             return;
         }
         
@@ -40,7 +40,7 @@ function CreatePost(){
             }
         }
        );
-        alert(response.data.message);
+        toast.success(response.data.message);
         setLoading(false);
         setTitle("");
         setContent("");

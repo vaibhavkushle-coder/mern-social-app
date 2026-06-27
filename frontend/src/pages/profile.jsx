@@ -65,7 +65,7 @@ setProfile(response.data.user);
             }
         );
 
-        alert(response.data.message);
+        toast.success(response.data.message);
 
         setLoading(false);
 

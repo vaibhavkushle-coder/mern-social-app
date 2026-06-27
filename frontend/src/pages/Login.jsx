@@ -10,6 +10,8 @@ import Input from "../components/input";
 
 import Button from "../components/Button";
 
+import toast from "react-hot-toast";
+
 function Login(){
 
     const [email,setEmail]=useState("");
@@ -49,7 +51,7 @@ function Login(){
 
                     if(!email || !password){
 
-                        alert("Fill all fields");
+                        ("Fill all fields");
 
                         return;
                     }
@@ -79,7 +81,7 @@ function Login(){
 
                 setLoading(false);
 
-                alert(response.data.message)
+                toast.success(response.data.message)
 
                 setError("");
 

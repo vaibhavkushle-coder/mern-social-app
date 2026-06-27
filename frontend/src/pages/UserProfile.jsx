@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import Input from "../components/input";
+import toast from "react-hot-toast";
 
 function UserProfile(){
 
@@ -183,7 +184,7 @@ function UserProfile(){
 
         } catch(error){
             console.log("USER PROFILE COMMENT ERROR =>",error);
-            alert(error?.response.data?.message || "Error adding comment");
+            toast.alert(error?.response.data?.message || "Error adding comment");
         }
     }
 

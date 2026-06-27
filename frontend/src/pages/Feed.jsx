@@ -346,6 +346,15 @@ function Feed() {
                             <h2 className="text-2xl font-bold mb-2">{post.title}</h2>
                             <p className="text-gray-600">{post.content}</p>
 
+                             {post.image && (
+                                            <img
+                                            src={post.image}
+                                            alt="post"
+                                            className="w-full rounded-lg mt-3
+                                            object-cover max-h-96"
+                                            />
+                                        )}
+
                             
                             <div className="flex gap-4 mt-2 items-center">
                                 <button
@@ -462,14 +471,7 @@ function Feed() {
                                             </button>
                                         )}
 
-                                        {post.image && (
-                                            <img
-                                            src={post.image}
-                                            alt="post"
-                                            className="w-full rounded-lg mt-3
-                                            object-cover max-h-96"
-                                            />
-                                        )}
+                                       
                         </div>
                     );
                 })}

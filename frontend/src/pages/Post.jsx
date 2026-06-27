@@ -241,6 +241,15 @@ post.content.toLowerCase().includes(search.toLocaleLowerCase())
                                         Content: {post.content}
                                     </p>
 
+                                     {post.image && (
+                                        <img
+                                        src={post.image}
+                                        alt="post"
+                                        className="w-full rounded-lg mt-3 
+                                        object-cover max-h-[500px ]"
+                                        />
+                                    )}
+
                                     <p className="text-sm text-gray-500 mt-2">
                                         Created By: {post.userId.name}
                                     </p>
@@ -283,6 +292,8 @@ post.content.toLowerCase().includes(search.toLocaleLowerCase())
                                             </div>
                                         ))
                                     }
+
+                                   
                                     
 
                                     </div>

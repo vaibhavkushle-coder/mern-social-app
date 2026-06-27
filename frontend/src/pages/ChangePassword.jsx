@@ -10,12 +10,12 @@ function ChangePassword(){
     async function handleChangePassword(){
 
         if(!oldPassword || !newPassword){
-            alert("Fil all fields");
+            toast.success("Fil all fields");
             return;
         }
 
         if(newPassword.length<6){
-            alert("Password must be at least 6 characters");
+          toast.success("Password must be at least 6 characters");
             return;
         }
 
@@ -37,7 +37,7 @@ function ChangePassword(){
             }
         );
 
-        alert(response.data.message);
+        toast.success(response.data.message);
     }
 
     return(

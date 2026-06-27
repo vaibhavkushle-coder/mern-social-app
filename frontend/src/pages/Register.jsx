@@ -8,6 +8,8 @@ import Input from "../components/input";
 
 import Button from "../components/Button";
 
+import toast from "react-hot-toast";
+
 
 function Register(){
 
@@ -32,7 +34,7 @@ async function handleRegister(){
 
         if(!name || !email || !password){
 
-            alert("Fill all fields");
+            toast.success("Fill all fields");
 
             return;
         }
