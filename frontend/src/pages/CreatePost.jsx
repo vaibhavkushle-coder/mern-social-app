@@ -22,19 +22,24 @@ function CreatePost(){
 
         setLoading(true);
 
-        const response = await axios.post(
+       const formData = new FormData();
 
-            "https://mern-social-app-xdit.onrender.com/post",
-            {
-                title,
-                content
-            },
-            {
-                headers:{
-                    Authorization:token
-                }
+       formData.append("title",title);
+       formData.append("content",content);
+
+       if (image){
+        formData.append("image",image);
+       }
+
+       const response = await axios.post(
+        "https://mern-social-app-xdit.onrender.com/post",
+        formData,
+        {
+            headers:{
+                Authorization: token
             }
-        );
+        }
+       );
         alert(response.data.message);
         setLoading(false);
         setTitle("");
