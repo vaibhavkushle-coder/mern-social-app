@@ -599,6 +599,8 @@ app.post("/post/comment/:id",authMiddleware,async(req,res)=>{
 app.get("/notifications",authMiddleware,async(req,res)=>{
 
     try{
+
+        
         const notifications = await Notification.find({
             receiver: req.user.id,
         })

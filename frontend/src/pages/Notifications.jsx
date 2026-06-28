@@ -15,7 +15,7 @@ function Notifications(){
             const token = localStorage.getItem("token");
 
             const response = await axios.get(
-                "https://mern-social-mern-xdit.onrender.com/notifications",
+                "https://mern-social-app-xdit.onrender.com/notifications",
                 {
                     headers:{
                         Authorization: token
