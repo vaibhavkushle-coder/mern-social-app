@@ -133,7 +133,7 @@ function App(){
   }/>
   
   <Route
-  path="/notificatios"
+  path="/notifications"
   element={
     <>
     <Navbar/>
