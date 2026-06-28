@@ -598,7 +598,8 @@ app.post("/post/comment/:id",authMiddleware,async(req,res)=>{
 
 app.get("/notifications",authMiddleware,async(req,res)=>{
 
-    try{
+        try{
+
 
         
         const notifications = await Notification.find({
@@ -617,6 +618,7 @@ app.get("/notifications",authMiddleware,async(req,res)=>{
             message:"Error fetching notifications"
         });
     }
+      
 });
 
 const PORT = process.env.PORT || 5000;
