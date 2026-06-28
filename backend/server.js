@@ -551,6 +551,15 @@ app.put("/post/like/:id", authMiddleware, async (req, res) => {
         post.likes.push(req.user.id);
         await post.save();
 
+        if (post.userId.toString() !== req.user.id) {
+    await Notification.create({
+        receiver: post.userId,
+        sender: req.user.id,
+        type: "like",
+        postId: post._id,
+    });
+}
+
       
 
         res.json({
