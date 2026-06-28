@@ -92,7 +92,7 @@ function Feed() {
                 }
             );
 
-            getFeed();
+           await getFeed();
         } catch (error) {
             console.log("LIKE FRONTEND ERROR =>", error);
             toast.alert(error?.response?.data?.message || "Error liking post");

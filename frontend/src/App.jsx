@@ -14,7 +14,6 @@ import Post from './pages/Post';
 import Feed from './pages/Feed';
 import UserProfile from './pages/UserProfile';
 import PostDetail from './pages/PostDetail';
-import Notifications from './pages/Notifications';
 function App(){
 
 
@@ -132,15 +131,7 @@ function App(){
     </>
   }/>
   
-  <Route
-  path="/notifications"
-  element={
-    <>
-    <Navbar/>
-  <Notifications/>
-  </>
-
-  }/>
+  
 
     </Routes>
     </div>
