@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 
 import Input from "../components/input";
 
+import toast from "react-hot-toast";
+
 function Post(){
     const [posts,setPosts] = useState([]);
     const [editingId,setEditingId] = useState(null);
@@ -62,7 +64,7 @@ function Post(){
             }
         );
 
-        alert(response.data.message);
+        toast.success(response.data.message);
         setLoading(false);
         getPosts();
     }
@@ -90,7 +92,7 @@ function Post(){
              
         );
 
-        alert(response.data.message);
+        toast.success(response.data.message);
         setLoading(false);
         setEditingId(null);
         getPosts();

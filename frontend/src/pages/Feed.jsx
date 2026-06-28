@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Input from "../components/input";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 function Feed() {
     const [posts, setPosts] = useState([]);
@@ -94,7 +95,7 @@ function Feed() {
             getFeed();
         } catch (error) {
             console.log("LIKE FRONTEND ERROR =>", error);
-            alert(error?.response?.data?.message || "Error liking post");
+            toast.alert(error?.response?.data?.message || "Error liking post");
         }
     }
 
@@ -123,7 +124,7 @@ function Feed() {
             getFeed();
         } catch (error) {
             console.log("COMMENT ERROR =>", error);
-            alert(error?.response?.data?.message || "Error adding comment");
+            toast.alert(error?.response?.data?.message || "Error adding comment");
         }
     }
 
@@ -140,12 +141,12 @@ function Feed() {
                 }
             );
 
-            alert(response.data.message);
+            toast.success(response.data.message);
 
             getFeed();
         }catch(error){
             console.log("DELETE COMMENT ERROR =>",error);
-            alert(error?.response?.data?.message || "Error deleting comment");
+            toast.alert(error?.response?.data?.message || "Error deleting comment");
         }
     }
 
@@ -163,14 +164,14 @@ function Feed() {
                 }
             );
 
-            alert(response.data.message);
+            toast.success(response.data.message);
 
             await getProfile();
             await getSuggestedUsers();
             await getFeed();
         } catch (error) {
             console.log("FOLLOW ERROR =>", error);
-            alert(error?.response?.data?.message || "Error following user");
+            toast.alert(error?.response?.data?.message || "Error following user");
         }
     }
 
@@ -188,14 +189,14 @@ function Feed() {
                 }
             );
 
-            alert(response.data.message);
+            toast.success(response.data.message);
 
             await getProfile();
             await getSuggestedUsers();
             await getFeed();
         } catch (error) {
             console.log("UNFOLLOW ERROR =>", error);
-            alert(error?.response?.data?.message || "Error unfollowing user");
+            toast.alert(error?.response?.data?.message || "Error unfollowing user");
         }
     }
 

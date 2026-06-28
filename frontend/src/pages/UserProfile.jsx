@@ -95,14 +95,14 @@ function UserProfile(){
                 }
             );
 
-            alert(response.data.message);
+            toast.success(response.data.message);
 
             setIsFollowing(true);
             getUserProfile();
 
         } catch(error){
             console.log("FOLLOW ERROR =>",error);
-            alert(error?.response?.data?.message || "Error following user");
+            toast.alert(error?.response?.data?.message || "Error following user");
         }
 
     }
@@ -123,14 +123,14 @@ function UserProfile(){
                 }
             );
 
-            alert(response.data.message);
+            toast.success(response.data.message);
 
             setIsFollowing(false);
             getUserProfile();
 
         } catch(error){
             console.log("UNFOLLOW ERROR =>",error);
-            alert(error?.response?.data?.message || "Error unfollowing user");
+            toast.alert(error?.response?.data?.message || "Error unfollowing user");
         }
     }
 
@@ -152,7 +152,7 @@ function UserProfile(){
             getUserProfile();
         } catch(error) {
             console.log("USER PROFILE LIKE ERROR =>",error);
-            alert(error?.response?.data?.message || "Enter liking post");
+            toast.alert(error?.response?.data?.message || "Enter liking post");
         }
     }
 

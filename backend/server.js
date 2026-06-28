@@ -12,6 +12,7 @@ const cloudinary = require("cloudinary").v2;
 
 
 
+
 dotenv.config();
 
 cloudinary.config({
@@ -27,6 +28,8 @@ const authMiddleware = require("./middleware/authMiddleware");
 const User = require("./models/User");
 const Post = require("./models/Post");
 const upload = require("./middleware/upload");
+const Notification = require("./models/Notification");
+
 
 
 app.use(cors());
@@ -198,6 +201,12 @@ app.put("/follow/:id",authMiddleware,
 
         await currentUser.save();
         await userToFollow.save();
+
+        await Notification.create({
+            receiver: userToFollow._id,
+            sender: currentUser._id,
+            type: "follow",
+        });
 
         res.json({
             message: "User followed successfully"
@@ -540,6 +549,15 @@ app.put("/post/like/:id", authMiddleware, async (req, res) => {
         post.likes.push(req.user.id);
         await post.save();
 
+        if (post.userId.toString() !== req.user.id) {
+            await Notification.create({
+                receiver: post.userId,
+                sender: req.user.id,
+                type: "like",
+                postId: post._id,
+            });
+        }
+
         res.json({
             message: "Post liked"
         });
@@ -564,9 +582,39 @@ app.post("/post/comment/:id",authMiddleware,async(req,res)=>{
 
     await post.save();
 
+    if(post.userId.toString() !== req.user.id){
+        await Notification.create({
+            receiver: post.userId,
+            sender: req.user.id,
+            type:"comment",
+            postId: post._id,
+        });
+    }
+
     res.json({
         message:"Comment added"
     });
+});
+
+app.get("/notifications",authMiddleware,async(req,res)=>{
+
+    try{
+        const notifications = await Notification.find({
+            receiver: req.user.id,
+        })
+        .populate("sender","name profilePic")
+        .populate("postId","title")
+        .sort({ createdAt: -1 });
+
+        res.json(notifications);
+
+    } catch(error){
+        console.log("NOTIFICATION ERROR =>",error);
+
+        res.status(500).json({
+            message:"Error fetching notifications"
+        });
+    }
 });
 
 const PORT = process.env.PORT || 5000;

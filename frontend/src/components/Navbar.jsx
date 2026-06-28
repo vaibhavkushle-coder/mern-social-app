@@ -2,6 +2,7 @@ import { Link, useNavigate, NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import useAuth from "../hooks/useAuth";
+import toast from "react-hot-toast";
 function Navbar(){
 
 const [profile, setProfile] = useState({});
@@ -51,7 +52,7 @@ const [darkMode,setDarkMode] = useState(false);
 
     setToken("");
 
-    alert("Logout successful");
+    toast.success("Logout successful");
 
     navigate("/login"); 
 
@@ -101,6 +102,7 @@ const [darkMode,setDarkMode] = useState(false);
            🌏 Feed
 
             </Link>
+            
 
 
             <button 
@@ -178,6 +180,14 @@ const [darkMode,setDarkMode] = useState(false);
             >
                 ➕
             </NavLink>
+
+            <button
+            onClick={()=> navigate("/notifications")}
+            className="text-2xl hover:scale-110
+            transition cursor-pointer"
+            >
+                🔔
+            </button>
 
             <NavLink to="/profile" className={({isActive})=>
             isActive

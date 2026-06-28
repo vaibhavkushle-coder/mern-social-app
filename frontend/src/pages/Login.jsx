@@ -89,7 +89,9 @@ function Login(){
 
                 setPassword("");
 
-                navigate("/")
+                setTimeout(() => {
+                    navigate("/");
+                },1000);
     
 
     }catch(error){
