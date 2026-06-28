@@ -202,6 +202,12 @@ app.put("/follow/:id",authMiddleware,
         await currentUser.save();
         await userToFollow.save();
 
+        await Notification.create({
+    receiver: userToFollow._id,
+    sender: currentUser._id,
+    type: "follow"
+});
+
       
 
         res.json({
