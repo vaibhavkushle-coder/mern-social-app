@@ -181,13 +181,7 @@ const [darkMode,setDarkMode] = useState(false);
                 ➕
             </NavLink>
 
-            <button
-            onClick={()=> navigate("/notifications")}
-            className="text-2xl hover:scale-110
-            transition cursor-pointer"
-            >
-                🔔
-            </button>
+            
 
             <NavLink to="/profile" className={({isActive})=>
             isActive
