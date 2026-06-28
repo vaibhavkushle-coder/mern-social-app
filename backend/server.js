@@ -586,6 +586,15 @@ app.post("/post/comment/:id",authMiddleware,async(req,res)=>{
 
     await post.save();
 
+    if (post.userId.toString() !== req.user.id) {
+    await Notification.create({
+        receiver: post.userId,
+        sender: req.user.id,
+        type: "comment",
+        postId: post._id,
+    });
+}
+
    
     res.json({
         message:"Comment added"
