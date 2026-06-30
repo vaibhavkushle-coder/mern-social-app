@@ -149,58 +149,74 @@ const [darkMode,setDarkMode] = useState(false);
 
             </>
         }
-        <div className="fixed bottom-4 left-1/2-translate-x-1/2
-         w-[95%] max-w-md bg-slate-900 text-white 
-         flex justify-around item-center py-3
-        rounded-2xl shadow-2xl z-50">
+<div className="fixed bottom-4 left-1/2 -translate-x-1/2
+w-[95%] max-w-md bg-slate-900 text-white
+flex justify-around items-center py-3
+rounded-2xl shadow-2xl z-50">
 
-            <NavLink to="/" className={({isActive})=>
+    <NavLink
+        to="/"
+        className={({ isActive }) =>
             isActive
-            ? "text-2xl p-2 bg-blue-500 rounded-full"
-            : "text-2xl p-2"
-            }
-            >
-                🏠
-            </NavLink>
+                ? "text-2xl p-2 bg-blue-500 rounded-full"
+                : "text-2xl p-2"
+        }
+    >
+        🏠
+    </NavLink>
 
-            <NavLink to="/feed" className={({isActive})=>
+    <NavLink
+        to="/feed"
+        className={({ isActive }) =>
             isActive
-            ? "text-2xl p-2 bg-blue-500 rounded-full"
-            : "text-2xl p-2"
-            }
-            >
-                🌏
-            </NavLink>
+                ? "text-2xl p-2 bg-blue-500 rounded-full"
+                : "text-2xl p-2"
+        }
+    >
+        🌏
+    </NavLink>
 
-            <NavLink to="/create-post" className={({isActive})=>
+    <NavLink
+        to="/create-post"
+        className={({ isActive }) =>
             isActive
-            ? "text-2xl p-2 bg-blue-500 rounded-full"
-            : "text-2xl p-2"
-            }
-            >
-                ➕
-            </NavLink>
+                ? "text-2xl p-2 bg-blue-500 rounded-full"
+                : "text-2xl p-2"
+        }
+    >
+        ➕
+    </NavLink>
 
-            
-
-            <NavLink to="/profile" className={({isActive})=>
+    <NavLink
+        to="/notifications"
+        className={({ isActive }) =>
             isActive
-            ? "text-2xl p-2 bg-blue-500 rounded-full"
-            : "text-2xl p-2"
-            }
-            >
-                👤
-            </NavLink>
+                ? "text-2xl p-2 bg-blue-500 rounded-full"
+                : "text-2xl p-2"
+        }
+    >
+        🔔
+    </NavLink>
 
-             
+    <NavLink
+        to="/profile"
+        className={({ isActive }) =>
+            isActive
+                ? "text-2xl p-2 bg-blue-500 rounded-full"
+                : "text-2xl p-2"
+        }
+    >
+        👤
+    </NavLink>
 
-            <button onClick={handleLogout} className="text-2xl p-2">
-                🚪
-            </button>
+    <button
+        onClick={handleLogout}
+        className="text-2xl p-2"
+    >
+        🚪
+    </button>
 
-        
-        </div>
-
+</div>
     </div>
    );
 }

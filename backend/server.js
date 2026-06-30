@@ -623,6 +623,54 @@ app.get("/notifications", authMiddleware, async (req, res) => {
     }
 });
 
+app.get("/notifications/count",authMiddleware,async(req,res)=>{
+
+    try{
+
+        const count = await Notification.countDocuments({
+            receiver: req.user.id,
+            isRead: false
+        });
+
+        res.json({
+            count
+        });
+
+    }catch(error){
+        console.log(error);
+        res.status(500).json({
+            message:"Error fetching notification count"
+        });
+    }
+});
+
+
+app.put("/notifications/read",authMiddleware,async(req,res)=>{
+
+    try{
+
+        await Notification.updateMany(
+            {
+                receiver:req.user.id,
+                isRead:false
+            },
+            {
+                isRead:true
+            }
+        );
+
+        res.json({
+            message:"All notification marked as read"
+     });
+    }catch(error){
+
+        console.log("READ NOTIFICATION ERROR =>",error);
+        res.status(500).json({
+            message:"Error updating notifications"
+        });
+    }
+});
+
 
 
 const PORT = process.env.PORT || 5000;
