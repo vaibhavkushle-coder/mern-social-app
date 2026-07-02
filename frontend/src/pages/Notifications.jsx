@@ -25,6 +25,18 @@ function Notifications() {
 
             setNotifications(response.data);
 
+
+           await axios.put(
+                "https://mern-social-app-xdit.onrender.com/notifications/read",
+                {},
+                {
+                    headers:{
+                        Authorization: token
+                    }
+                }
+
+            );
+
         } catch (error) {
             console.log("NOTIFICATION ERROR =>", error);
         }

@@ -29,6 +29,8 @@ const User = require("./models/User");
 const Post = require("./models/Post");
 const upload = require("./middleware/upload");
 const Notification = require("./models/Notification");
+const Conversation = require(".models/Conversation");
+const Message = require("./models/Message");
 
 
 
@@ -390,6 +392,84 @@ app.post("/post",authMiddleware,
         message:"Post created successfully"
     });
 
+});
+
+app.post("/conversation/:userId",authMiddleware,async(req,res)=>{
+
+    try{
+
+        let conversation = await
+        Conversation.findOne({
+            participants:{
+                $all:[req.user.id,req.params.userId]
+            }
+        });
+
+        if(! conversation){
+
+            conversation = await 
+            Conversation.create({
+                participants:[req.user.id,req.params.userId]
+            });
+        }
+
+        res.json(conversation);
+
+    }catch(error){
+        console.log("CONVERSATION ERROR =>",error);
+        res.status(500).json({
+            message:"Error creating conversation"
+        });
+    }
+});
+
+app.post("/message",authMiddleware,async(req,res)=>{
+
+    try{
+
+        const [ conversationId, text] = req.body;
+
+        if(!text.trim()){
+            return res.status(400).json({
+                message:"Message text cannot be empty"
+            });
+        }
+
+        const message = await Message.create({
+
+            conversation: conversationId,
+            sender:req.user.id,
+            text
+        });
+
+        res.json(message);
+
+    } catch (error){
+        console.log("MESSAGE ERROR =>",error);
+        res.status(500).json({
+            message:"Error sending message"
+        });
+    }
+});
+
+app.post("/message/:conversationId",authMiddleware,async(req,res)=>{
+
+    try{
+
+        const messages = await Message.find({
+            conversation: req.params.conversationId
+        })
+        .populate("sender","name profilePic")
+        .sort({ createdAt: 1});
+
+        res.json(messages);
+
+    }catch(error){
+        console.log("GET MESSAGES ERROR =>",error);
+        res.status(500).json({
+            message:"Error fetching messages"
+        });
+    }
 });
 
 app.get("/posts",authMiddleware,async(req,res)=>{

@@ -1,4 +1,4 @@
-import { Link, useNavigate, NavLink } from "react-router-dom";
+import { Link, useNavigate, NavLink, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import useAuth from "../hooks/useAuth";
@@ -8,12 +8,15 @@ function Navbar(){
 const [profile, setProfile] = useState({});
 const {token,setToken}=useAuth();
 const [darkMode,setDarkMode] = useState(false);
+const [notificationCount,setNotificationCount] =useState(0);
 
    const navigate = useNavigate();
+   const location = useLocation();
 
    useEffect(()=>{
     getProfile();
-   },[]);
+    getNotificationCount();
+   },[location]);
 
    async function getProfile(){
 
@@ -34,6 +37,30 @@ const [darkMode,setDarkMode] = useState(false);
         setProfile(responce.data.user);
 
     }catch(error){
+        console.log(error);
+    }
+   }
+
+   async function getNotificationCount(){
+
+    try{
+
+        const token = localStorage.getItem("token");
+
+        const response = await axios.get(
+            "https://mern-social-app-xdit.onrender.com/notifications/count",
+            {
+                headers:{
+                    Authorization: token
+                }
+            }
+        );
+
+                  setNotificationCount(response.data.count);
+
+
+    }catch(error){
+
         console.log(error);
     }
    }
@@ -191,11 +218,17 @@ rounded-2xl shadow-2xl z-50">
         to="/notifications"
         className={({ isActive }) =>
             isActive
-                ? "text-2xl p-2 bg-blue-500 rounded-full"
-                : "text-2xl p-2"
+                ? "relative text-2xl p-2 bg-blue-500 rounded-full"
+                : "relative text-2xl p-2"
         }
     >
         🔔
+        {notificationCount > 0 &&(
+            <span className="absolute -top-1-right-1 bg-red-500 
+            text-white text-xs rounded-full px-1">
+                {notificationCount}
+            </span>
+        )}
     </NavLink>
 
     <NavLink
