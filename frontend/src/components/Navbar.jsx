@@ -204,6 +204,17 @@ rounded-2xl shadow-2xl z-50">
     </NavLink>
 
     <NavLink
+        to="/chat"
+        className={({ isActive}) =>
+            isActive
+                ? "text-2xl p-2 bg-blue-500 rounded-full"
+                : "text-2xl p-2"
+        }
+    >
+        💬
+    </NavLink>
+
+    <NavLink
         to="/create-post"
         className={({ isActive }) =>
             isActive

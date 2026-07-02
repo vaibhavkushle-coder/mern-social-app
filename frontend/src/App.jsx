@@ -15,6 +15,7 @@ import Feed from './pages/Feed';
 import UserProfile from './pages/UserProfile';
 import PostDetail from './pages/PostDetail';
 import Notifications from './pages/Notifications';
+import Chat from './pages/Chat';
 function App(){
 
 
@@ -140,6 +141,16 @@ function App(){
             <Notifications />
         </>
     }
+/>
+
+<Route
+path='/chat'
+element={
+  <>
+  <Navbar/>
+  <Chat/>
+  </>
+}
 />
   
   

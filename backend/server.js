@@ -29,7 +29,7 @@ const User = require("./models/User");
 const Post = require("./models/Post");
 const upload = require("./middleware/upload");
 const Notification = require("./models/Notification");
-const Conversation = require(".models/Conversation");
+const Conversation = require("./models/Conversation");
 const Message = require("./models/Message");
 
 
@@ -442,6 +442,13 @@ app.post("/message",authMiddleware,async(req,res)=>{
             text
         });
 
+        await Conversation.findByIdAndUpdate(
+            conversationId,
+            {
+                updatedAt: new Date()
+            }
+        );
+
         res.json(message);
 
     } catch (error){
@@ -468,6 +475,26 @@ app.post("/message/:conversationId",authMiddleware,async(req,res)=>{
         console.log("GET MESSAGES ERROR =>",error);
         res.status(500).json({
             message:"Error fetching messages"
+        });
+    }
+});
+
+app.get("/conversations",authMiddleware,async(req,res)=>{
+
+    try{
+
+        const conversations = await Conversation.find({
+            participants: req.user.id
+        })
+        .populate("participants","name profilePic")
+        .sort({ updatedAt: -1});
+
+        res.json(conversations);
+
+    }catch(error){
+        console.log("GET CONVERSATION ERROR =>",error);
+        res.status(500).json({
+            message:"Error fetching conversations"
         });
     }
 });
