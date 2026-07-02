@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Input from "../components/input";
 import axios from "axios";
 
@@ -11,11 +11,31 @@ function ChatDetail(){
     const [currentUserId, setCurrentUserId] = useState("");
 
     const { id } = useParams();
+    const messagesEndRef = useRef(null);
+
+    useEffect(()=>{
+
+        messagesEndRef.current?.scrolllntoView({
+            behavior:"smooth"
+        });
+    },[messages]);
 
     useEffect(()=>{
         getProfile();
         getOrCreateConversation();
     },[]);
+
+    useEffect(()=>{
+
+        if(!conversation) return;
+
+        const interval = setInterval(()=>{
+            getMessages(conversation._id);
+        },2000);
+
+        return() => clearInterval(interval);
+
+    },[conversation]);
 
 
     async function getOrCreateConversation(){
@@ -51,7 +71,8 @@ function ChatDetail(){
             const token = localStorage.getItem("token");
 
             const response = await axios.get(
-                `https://mern-social-app=xdit.onrender.com/messages/${conversationId}`,
+                `https://mern-social-app-xdit.onrender.com/message/${conversationId}`,
+                
                 {
                     headers:{
                         Authorization: token
@@ -124,7 +145,8 @@ function ChatDetail(){
 
         <p>User Id: {id}</p>
 
-        <div className="">
+        <div className="bg-white rounded-xl shadow
+        p-4 mb-4 h-[400px] overflow-y-auto">
             {messages.length === 0 ? (
                 <p className="text-gray-500 text-center">
                     NO messages yet 👋
@@ -134,7 +156,7 @@ function ChatDetail(){
                     <div
                     key={message._id}
                     className={`mb-3 flex ${
-                    message.sender === currentUserId
+                    message.sender?._id === currentUserId
                     ? "justify-end"
                     : "justify-start"
 
@@ -142,14 +164,15 @@ function ChatDetail(){
                     >
 
                         <div
-                        className={`px-4 py-2 rounded-2xl 
+                        className={`px-4 py-2 rounded-2xl
                             max-w-[70%] ${
-                                message.sender === currentUserId
+                                message.sender?._id === currentUserId
                                 ? "bg-blue-500 text-white"
                                 : "bg-gray-200 text-black"
                             }`}
                             >
                                 {message.text}
+
 
                                 </div>
                                 </div>
@@ -171,6 +194,9 @@ function ChatDetail(){
         >
             Send
         </button>
+
+                                        <div ref={messagesEndRef}></div>
+
 
         </div>
     );
