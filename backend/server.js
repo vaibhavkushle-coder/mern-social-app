@@ -427,7 +427,7 @@ app.post("/message",authMiddleware,async(req,res)=>{
 
     try{
 
-        const [ conversationId, text] = req.body;
+        const { conversationId, text }= req.body;
 
         if(!text.trim()){
             return res.status(400).json({
@@ -459,7 +459,7 @@ app.post("/message",authMiddleware,async(req,res)=>{
     }
 });
 
-app.post("/message/:conversationId",authMiddleware,async(req,res)=>{
+app.get("/message/:conversationId",authMiddleware,async(req,res)=>{
 
     try{
 

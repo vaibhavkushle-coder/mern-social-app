@@ -16,6 +16,7 @@ import UserProfile from './pages/UserProfile';
 import PostDetail from './pages/PostDetail';
 import Notifications from './pages/Notifications';
 import Chat from './pages/Chat';
+import ChatDetail from './pages/ChatDetail';
 function App(){
 
 
@@ -149,6 +150,16 @@ element={
   <>
   <Navbar/>
   <Chat/>
+  </>
+}
+/>
+
+<Route
+path='/chat/:id'
+element={
+  <>
+  <Navbar/>
+  <ChatDetail/>
   </>
 }
 />

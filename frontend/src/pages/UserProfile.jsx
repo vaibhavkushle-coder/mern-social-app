@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Input from "../components/input";
 import toast from "react-hot-toast";
 
 function UserProfile(){
+    const navigate = useNavigate();
 
     const { id } = useParams();
 
@@ -230,8 +231,11 @@ function UserProfile(){
                             {user?.email}</p>
 
                         {user?._id !== currentUserId && (
+
+                          <div className="flex gap-2 mt-3">
+
                             <button
-                            className={`mt-3 px-4 py-2
+                            className={`px-4 py-2
                                 rounded-lg text-white 
                                 ${
                                     isFollowing ?
@@ -242,6 +246,16 @@ function UserProfile(){
                                 }>
                                     {isFollowing ? "✅ Following" : "➕ Follow"}
                                 </button>
+
+                                <button
+                                className="px-4 py-2 rounded-lg bg-purple-500
+                                 text-white "
+                                onClick={()=>navigate(`/chat/${user._id}`)}
+                                >
+                                   💬 Message
+                                </button>
+
+                             </div>
                         )}
 
                     </div>
