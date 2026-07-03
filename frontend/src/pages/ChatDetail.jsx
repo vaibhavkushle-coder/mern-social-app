@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import Input from "../components/input";
 import axios from "axios";
+import socket from "../socket";
 
 function ChatDetail(){
 
@@ -14,8 +15,44 @@ function ChatDetail(){
     const messagesEndRef = useRef(null);
 
     useEffect(()=>{
+        socket.on("newMessage",(message)=>{
+            setMessages((prev)=>[...prev,message]);
+        });
 
-        messagesEndRef.current?.scrolllntoView({
+        return()=>{
+            socket.off("newMessage");
+        };
+    },[]);
+
+    useEffect(()=>{
+
+        async function connectSocket(){
+
+            socket.connect();
+
+            const token = localStorage.getItem("token");
+
+            const response = await axios.get(
+                "https://mern-social-app-xdit.onrender.com/profile",
+                {
+                    headers:{
+                        Authorization: token
+                    }
+                }
+            );
+
+            socket.emit("join",response.data.user._id);
+        }
+
+        connectSocket();
+        return () => {
+            socket.disconnect();
+        };
+    },[]);
+
+    useEffect(()=>{
+
+        messagesEndRef.current?.scrollIntoView({
             behavior:"smooth"
         });
     },[messages]);
@@ -24,18 +61,6 @@ function ChatDetail(){
         getProfile();
         getOrCreateConversation();
     },[]);
-
-    useEffect(()=>{
-
-        if(!conversation) return;
-
-        const interval = setInterval(()=>{
-            getMessages(conversation._id);
-        },2000);
-
-        return() => clearInterval(interval);
-
-    },[conversation]);
 
 
     async function getOrCreateConversation(){
@@ -106,8 +131,9 @@ function ChatDetail(){
                 }
             );
 
-            setText("");
-            getMessages(conversation._id);
+            setMessages((prev)=>[...prev,response.data]);
+                        setText("");
+
 
         }catch(error){
             console.error(error);

@@ -41,6 +41,11 @@ io.on("connection",(socket) => {
 
     console.log("🟢 User Connected:",socket.id);
 
+    socket.on("join",(userId)=>{
+        socket.join(userId);
+        console.log(userId,"joined");
+    });
+
     socket.on("disconnect",() => {
         console.log("🔴 User Disconnected:",socket.id);
     });
@@ -467,6 +472,20 @@ app.post("/message",authMiddleware,async(req,res)=>{
             text
         });
 
+        const populatedMessage = await
+        Message.findById(message._id)
+        .populate("sender","name profilePic");
+
+        const conversation = await
+        Conversation.findById(conversationId);
+
+        const receiverId =
+        Conversation.participants.find(
+            (id) => id.toString()!==req.user.id
+        );
+
+        io.to(receiverId.toString()).emit("newMessage",populatedMessage);
+
         await Conversation.findByIdAndUpdate(
             conversationId,
             {
@@ -474,7 +493,7 @@ app.post("/message",authMiddleware,async(req,res)=>{
             }
         );
 
-        res.json(message);
+        res.json(populatedMessage);
 
     } catch (error){
         console.log("MESSAGE ERROR =>",error);
