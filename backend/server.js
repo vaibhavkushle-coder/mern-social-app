@@ -480,7 +480,7 @@ app.post("/message",authMiddleware,async(req,res)=>{
         Conversation.findById(conversationId);
 
         const receiverId =
-        Conversation.participants.find(
+        conversation.participants.find(
             (id) => id.toString()!==req.user.id
         );
 
