@@ -14,15 +14,21 @@ function ChatDetail(){
     const { id } = useParams();
     const messagesEndRef = useRef(null);
 
-    useEffect(()=>{
-        socket.on("newMessage",(message)=>{
-            setMessages((prev)=>[...prev,message]);
-        });
+   useEffect(() => {
+    socket.on("newMessage", (message) => {
+        setMessages((prev) => [...prev, message]);
 
-        return()=>{
-            socket.off("newMessage");
-        };
-    },[]);
+        setTimeout(() => {
+            messagesEndRef.current?.scrollIntoView({
+                behavior: "smooth",
+            });
+        }, 100);
+    });
+
+    return () => {
+        socket.off("newMessage");
+    };
+}, []);
 
     useEffect(()=>{
 
