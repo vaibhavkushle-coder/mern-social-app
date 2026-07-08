@@ -212,6 +212,9 @@ function ChatDetail(){
                         ))
             )}
 
+                                                    <div ref={messagesEndRef}></div>
+
+
         </div>
 
         <Input
@@ -227,7 +230,6 @@ function ChatDetail(){
             Send
         </button>
 
-                                        <div ref={messagesEndRef}></div>
 
 
         </div>
