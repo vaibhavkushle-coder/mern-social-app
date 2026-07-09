@@ -10,9 +10,21 @@ function ChatDetail(){
     const [messages, setMessages] = useState([]);
     const [text, setText] = useState("");
     const [currentUserId, setCurrentUserId] = useState("");
+    const [onlineUsers, setOnlineUsers] = useState({});
 
     const { id } = useParams();
     const messagesEndRef = useRef(null);
+
+    useEffect(()=>{
+        
+        socket.on("onlineUsers",(data)=>{
+            setOnlineUsers(data);
+        });
+
+        return()=>{
+            socket.off("onlineUsers");
+        };
+    });
 
    useEffect(() => {
     socket.on("newMessage", (message) => {
@@ -176,6 +188,12 @@ function ChatDetail(){
         </h1>
 
         <p>User Id: {id}</p>
+
+        <p className={onlineUsers[id]?
+            "text-green-500" : "text-gray-500"
+        }>
+            {onlineUsers[id]?"🟢 Online":"⚫ Offline"}
+        </p>
 
         <div className="bg-white rounded-xl shadow
         p-4 mb-4 h-[400px] overflow-y-auto">
