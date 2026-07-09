@@ -37,16 +37,35 @@ const io = new Server(server,{
     }
 });
 
+const onlineUsers={};
+
 io.on("connection",(socket) => {
 
     console.log("🟢 User Connected:",socket.id);
 
     socket.on("join",(userId)=>{
+
+        onlineUsers[userId]=socket.id;
+        
+        io.emit("onlineUsers",onlineUsers);
+
         socket.join(userId);
+
         console.log(userId,"joined");
     });
 
     socket.on("disconnect",() => {
+
+        const userId = 
+        Object.keys(onlineUsers).find(
+            key=>onlineUsers[key]===socket.id
+        );
+
+        if(userId){
+            delete onlineUsers[userId];
+            io.emit("onlineUsers",onlineUsers);
+        }
+        
         console.log("🔴 User Disconnected:",socket.id);
     });
 });
