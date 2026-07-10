@@ -551,6 +551,8 @@ app.post("/message",authMiddleware,async(req,res)=>{
         await Conversation.findByIdAndUpdate(
             conversationId,
             {
+                lastMessage:text,
+                lastMessageTime:new Date(),
                 updatedAt: new Date()
             }
         );
