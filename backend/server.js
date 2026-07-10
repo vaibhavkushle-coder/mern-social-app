@@ -85,7 +85,7 @@ io.on("connection",(socket) => {
             );
 
             const senderSocket =
-            onlineUsers[message.senderId];
+            onlineUsers[message.sender.toString()];
 
             if(senderSocket){
 

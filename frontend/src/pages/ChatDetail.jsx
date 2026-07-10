@@ -36,6 +36,7 @@ function ChatDetail(){
     },[messages,currentUserId]);
 
     useEffect(()=>{
+        
       
         socket.on("typing",(data)=>{
             setIsTyping(true);
@@ -59,6 +60,7 @@ function ChatDetail(){
                         return message;
                     })
                 );
+                console.log("messageSeen event received:",data);
             });
 
             return()=>{
