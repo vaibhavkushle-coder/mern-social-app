@@ -227,7 +227,10 @@ function Feed() {
                         >
                             <div
                                 className="flex items-center gap-3 cursor-pointer"
-                                onClick={() => navigate(`/user/${user._id}`)}
+                               onClick={(e)=>{
+                                e.stopPropagation();
+                                navigate(`/user/${user._id}`);
+                               }}
                             >
                                 {user.profilePic ? (
                                     <img
@@ -311,7 +314,10 @@ function Feed() {
             
                             <div
                                 className="flex items-center gap-3 mb-3 cursor-pointer"
-                                onClick={() => navigate(`/user/${post.userId?._id}`)}
+                                onClick={(e)=>{
+                                    e.stopPropagation();
+                                    navigate(`/user/${post.userId?._id}`);
+                                }}
                             >
                                 <img
                                     src={post.userId?.profilePic}

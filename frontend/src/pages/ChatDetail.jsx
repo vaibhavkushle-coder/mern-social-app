@@ -11,9 +11,22 @@ function ChatDetail(){
     const [text, setText] = useState("");
     const [currentUserId, setCurrentUserId] = useState("");
     const [onlineUsers, setOnlineUsers] = useState({});
+    const [isTyping,setIsTyping] = useState(false);
 
     const { id } = useParams();
     const messagesEndRef = useRef(null);
+    const typingTimeout = useRef(null);
+
+    useEffect(()=>{
+      
+        socket.on("typing",(data)=>{
+            setIsTyping(true);
+        });
+
+        socket.on("stopTyping",()=>{
+            setIsTyping(false);
+        });
+    });
 
     useEffect(()=>{
         
@@ -230,14 +243,34 @@ function ChatDetail(){
                         ))
             )}
 
-                                                    <div ref={messagesEndRef}></div>
+            <div ref={messagesEndRef}></div>
 
 
         </div>
 
+        {isTyping && (
+            <p className="text-gray-500 text-sm">
+                ✍️ Typing...
+            </p>
+        )}
+
         <Input
         value={text}
-        onChange={(e)=>setText(e.target.value)}
+        onChange={(e)=>{
+
+            setText(e.target.value);
+
+            socket.emit("typing",{
+                senderId:currentUserId,
+                receiverId:id
+            });
+
+            clearTimeout(typingTimeout.current);
+
+            typingTimeout.current = setTimeout(()=>{
+                socket.emit("stopTyping");
+            },3000);
+        }}
         placeholder="Type a message..."
         />
 

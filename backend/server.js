@@ -54,6 +54,27 @@ io.on("connection",(socket) => {
         console.log(userId,"joined");
     });
 
+    socket.on("typing",(data)=>{
+
+        const receiverSocket=
+        onlineUsers[data.receiverId];
+
+        io.to(receiverSocket).emit("typing",{
+            senderId:data.senderId
+        });
+
+        socket.on("stopTyping",(data)=>{
+           
+            const receiverSocket =
+            onlineUsers[data.receiverId];
+
+            if(receiverSocket){
+                io.to(receiverSocket).emit("stopTyping");
+            }
+        });
+        
+    });
+
     socket.on("disconnect",() => {
 
         const userId = 
