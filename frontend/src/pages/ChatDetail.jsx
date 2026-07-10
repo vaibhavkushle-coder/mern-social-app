@@ -268,7 +268,10 @@ function ChatDetail(){
             clearTimeout(typingTimeout.current);
 
             typingTimeout.current = setTimeout(()=>{
-                socket.emit("stopTyping");
+                socket.emit("stopTyping",{
+                    senderId:currentUserId,
+                    receiverId:id
+                });
             },3000);
         }}
         placeholder="Type a message..."
