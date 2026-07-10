@@ -73,6 +73,9 @@ io.on("connection",(socket) => {
             }
         });
 
+        console.log("Sending messageSeen to:",senderSocket);
+        console.log("Message Id:",message._id);
+
         socket.on("messageSeen",async(data)=>{
 
             const message = await

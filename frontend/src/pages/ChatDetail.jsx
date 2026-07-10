@@ -45,6 +45,8 @@ function ChatDetail(){
             setIsTyping(false);
         });
 
+        console.log("messageSeen received",data);
+
             socket.on("messageSeen",(data)=>{
 
                 setMessages((prev)=>
