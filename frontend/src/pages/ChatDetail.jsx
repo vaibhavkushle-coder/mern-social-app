@@ -17,6 +17,24 @@ function ChatDetail(){
     const messagesEndRef = useRef(null);
     const typingTimeout = useRef(null);
 
+   
+
+    useEffect(()=>{
+
+        messages.forEach((message)=>{
+            
+            if(
+                message.sender._id.toString() !== currentUserId &&
+                !message.seen
+            ){
+                socket.emit("messageSeen",{
+                    messageId:message._id
+                });
+            }
+        });
+
+    },[messages,currentUserId]);
+
     useEffect(()=>{
       
         socket.on("typing",(data)=>{
@@ -26,7 +44,29 @@ function ChatDetail(){
         socket.on("stopTyping",()=>{
             setIsTyping(false);
         });
-    });
+
+            socket.on("messageSeen",(data)=>{
+
+                setMessages((prev)=>
+                    prev.map((message)=>{
+                        if(message._id===data.messageId){
+                            return{
+                                ...message,
+                                seen:true
+                            };
+                        }
+                        return message;
+                    })
+                );
+            });
+
+            return()=>{
+                socket.off("typing");
+                socket.off("stopTyping");
+                socket.off("messageSeen");
+            };
+        
+    },[]);
 
     useEffect(()=>{
         
@@ -37,7 +77,7 @@ function ChatDetail(){
         return()=>{
             socket.off("onlineUsers");
         };
-    });
+    },[]);
 
    useEffect(() => {
     socket.on("newMessage", (message) => {
@@ -235,6 +275,12 @@ function ChatDetail(){
                             }`}
                             >
                                 {message.text}
+
+                                {message.sender?._id===currentUserId && (
+                                    <p className="text-xs mt-1 text-right">
+                                        {message.seen?"✔️✔️Seen":"✔️send"}
+                                    </p>
+                                )}
 
 
                                 </div>

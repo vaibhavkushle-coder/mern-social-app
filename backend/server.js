@@ -72,7 +72,28 @@ io.on("connection",(socket) => {
                 io.to(receiverSocket).emit("stopTyping");
             }
         });
-        
+
+        socket.on("messageSeen",async(data)=>{
+
+            const message = await
+            Message.findByIdAndUpdate(
+                data.messageId,
+                {seen:true},
+                {new:true}
+            );
+
+            const senderSocket =
+            onlineUsers[message.senderId];
+
+            if(senderSocket){
+
+                io.to(senderSocket).emit("messageSeen",{
+                    messageId:message._id
+                });
+            }
+
+        });
+
     });
 
     socket.on("disconnect",() => {
