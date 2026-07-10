@@ -44,8 +44,7 @@ function ChatDetail(){
         socket.on("stopTyping",()=>{
             setIsTyping(false);
         });
-
-        console.log("messageSeen received",data);
+        
 
             socket.on("messageSeen",(data)=>{
 

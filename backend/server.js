@@ -62,6 +62,7 @@ io.on("connection",(socket) => {
         io.to(receiverSocket).emit("typing",{
             senderId:data.senderId
         });
+    });
 
         socket.on("stopTyping",(data)=>{
            
@@ -95,7 +96,6 @@ io.on("connection",(socket) => {
 
         });
 
-    });
 
     socket.on("disconnect",() => {
 
