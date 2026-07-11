@@ -553,6 +553,10 @@ app.post("/message",authMiddleware,async(req,res)=>{
             {
                 lastMessage:text,
                 lastMessageTime:new Date(),
+                updatedAt:new Date()
+            },
+            {
+                new:true
             }
         );
 

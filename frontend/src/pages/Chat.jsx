@@ -14,14 +14,15 @@ function Chat(){
 
         socket.on("conversationUpdate",(updatedConversation)=>{
 
-            setConversations((prev)=>
-            prev.map((conversations)=>
-            
-            conversations._id===updatedConversation._id
-        ? updatedConversation
-        : conversations
-  )
-  );
+          setConversations((prev)=>{
+             
+            const filtered = prev.filter(
+                (conversations)=>
+                    conversation._id !== updatedConversation._id
+            );
+
+            return {updatedConversation,...filtered};
+          })
         });
 
         return()=>{
