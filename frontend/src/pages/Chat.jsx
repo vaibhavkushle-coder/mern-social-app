@@ -17,12 +17,12 @@ function Chat(){
           setConversations((prev)=>{
              
             const filtered = prev.filter(
-                (conversations)=>
+                (conversation)=>
                     conversation._id !== updatedConversation._id
             );
 
-            return {updatedConversation,...filtered};
-          })
+            return [updatedConversation,...filtered];
+          });
         });
 
         return()=>{
