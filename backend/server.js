@@ -611,7 +611,7 @@ app.get("/conversations",authMiddleware,async(req,res)=>{
         const conversationsWithUnread = await 
         Promise.all(
 
-            conversation.map(async(conversation)=>{
+            conversations.map(async(conversation)=>{
 
                 const unreadCount = await Message.countDocuments({
 
