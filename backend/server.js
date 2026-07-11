@@ -560,13 +560,30 @@ app.post("/message",authMiddleware,async(req,res)=>{
             }
         );
 
-        const updatedConversation = await
-        Conversation.findById(conversationId)
-        .populate("participants","name profilePic");
+       const receiverUnreadCount = await
+       Message.countDocuments({
+        conversation:conversationId,
+        sender:req.user.id,
+        seen:false,
+       });
 
-        io.to(receiverId.toString()).emit("conversationUpdate",updatedConversation);
+       const senderUnreadCount = 0;
 
-        io.to(req.user.id).emit("conversationUpdate",updatedConversation);
+       const receiverCoversation = await
+       Conversation.findById(conversation)
+       .populate("participants","name profilePic");
+
+       receiverCoversation._doc.unreadCount = receiverUnreadCount;
+
+       const senderConversation = await
+       Conversation.findById(conversationId)
+       .populate("participants","name profilePic");
+
+       senderConversation.doc.unreadCount = senderUnreadCount;
+
+       io.to(receiverId.toString()).emit("conversationUpdate",receiverCoversation);
+
+       io.to(req.user.id).emit("conversationUpdate",senderConversation);
 
         res.json(populatedMessage);
 

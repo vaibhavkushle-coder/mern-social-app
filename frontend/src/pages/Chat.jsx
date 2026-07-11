@@ -120,7 +120,7 @@ function Chat(){
 
                         </div>
 
-                        <div className="">
+                        <div className="flex flex-col items-end">
 
                         <p className="text-xs text-gray -400">
                             {
@@ -135,7 +135,9 @@ function Chat(){
 
                         {
                             conversation.unreadCount > 0 && (
-                                <span>
+                                <span className="bg-green-500 text-white
+                                text-xs font-bold rounded-full min-w-6
+                                h-6 flex items-center justify-center mt-1">
                                     {conversation.unreadCount}
                                 </span>
                             )
