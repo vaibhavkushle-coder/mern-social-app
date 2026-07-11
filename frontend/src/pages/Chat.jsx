@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import socket from "../socket";
 
 function Chat(){
      
@@ -8,6 +9,26 @@ function Chat(){
     const [currentUserId, setCurrentUserId] = useState("");
 
     const navigate = useNavigate();
+
+    useEffect(()=>{
+
+        socket.on("conversationUpdated",(updatedConversation)=>{
+
+            setConversations((prev)=>
+            prev.map((conversations)=>
+            
+            conversations._id===updatedConversation._id
+        ? updatedConversation
+        : conversations
+  )
+  );
+        });
+
+        return()=>{
+            socket.off("conversationUpdate");
+        };
+
+    },[]);
 
     useEffect(()=>{
         getConversations();
@@ -68,6 +89,8 @@ function Chat(){
                         (user)=>user._id !== currentUserId
                      );
 
+                     if(!OtherUser) return null;
+
                      return(
 
                         <div
@@ -82,10 +105,28 @@ function Chat(){
                             className="w-12 h-12 rounded-full object-cover border"
                             />
                       
-                      <div>
+                      <div className="flex-1">
                             <p className="font-semibold text-lg">
-                                {OtherUser.name}</p>
-                       </div>     
+                                {OtherUser.name}
+                                </p>
+
+                       <p className="text-gray-500 text-sm truncate">
+                        {conversation.lastMessage || "No messages yet"}
+                        </p>  
+
+                        <p className="text-xs text-gray -400">
+                            {
+                                conversation.lastMessageTime?new
+                                Date(conversation.lastMessageTime).toLocaleTimeString([],{
+                                    hour:"2-digit",
+                                    minute:"2-digit",
+                                })
+                                :""
+                            }
+                        </p>
+
+                      </div>
+   
 
                         </div>
                      )

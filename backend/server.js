@@ -553,9 +553,16 @@ app.post("/message",authMiddleware,async(req,res)=>{
             {
                 lastMessage:text,
                 lastMessageTime:new Date(),
-                updatedAt: new Date()
             }
         );
+
+        const updatedConversation = await
+        Conversation.findById(conversationId)
+        .populate("participants","name profilePic");
+
+        io.to(receiverId.toString()).emit("conversationUpdate",updatedConversation);
+
+        io.to(req.user.id).emit("conversationUpdate",updatedConversation);
 
         res.json(populatedMessage);
 
