@@ -106,7 +106,10 @@ function Chat(){
                             className="w-12 h-12 rounded-full object-cover border"
                             />
                       
-                      <div className="flex-1">
+                      <div className="flex-1 flex justify-between items-center">
+
+                        <div>
+
                             <p className="font-semibold text-lg">
                                 {OtherUser.name}
                                 </p>
@@ -114,6 +117,10 @@ function Chat(){
                        <p className="text-gray-500 text-sm truncate">
                         {conversation.lastMessage || "No messages yet"}
                         </p>  
+
+                        </div>
+
+                        <div className="">
 
                         <p className="text-xs text-gray -400">
                             {
@@ -125,6 +132,16 @@ function Chat(){
                                 :""
                             }
                         </p>
+
+                        {
+                            conversation.unreadCount > 0 && (
+                                <span>
+                                    {conversation.unreadCount}
+                                </span>
+                            )
+                        }
+
+                        </div>
 
                       </div>
    

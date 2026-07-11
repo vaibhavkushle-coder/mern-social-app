@@ -608,7 +608,28 @@ app.get("/conversations",authMiddleware,async(req,res)=>{
         .populate("participants","name profilePic")
         .sort({ updatedAt: -1});
 
-        res.json(conversations);
+        const conversationsWithUnread = await 
+        Promise.all(
+
+            conversation.map(async(conversation)=>{
+
+                const unreadCount = await Message.countDocuments({
+
+                    conversation: conversation._id,
+
+                    sender:{ $ne:req.user.id},
+
+                    seen:false
+                });
+
+                return {
+                    ...conversation.toObject(),
+                    unreadCount
+                };
+            })
+        );
+
+        res.json(conversationsWithUnread);
 
     }catch(error){
         console.log("GET CONVERSATION ERROR =>",error);
