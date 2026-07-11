@@ -12,7 +12,7 @@ function Chat(){
 
     useEffect(()=>{
 
-        socket.on("conversationUpdated",(updatedConversation)=>{
+        socket.on("conversationUpdate",(updatedConversation)=>{
 
             setConversations((prev)=>
             prev.map((conversations)=>
