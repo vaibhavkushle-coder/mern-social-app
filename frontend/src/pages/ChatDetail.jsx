@@ -60,7 +60,6 @@ function ChatDetail(){
                         return message;
                     })
                 );
-                console.log("messageSeen event received:",data);
             });
 
             return()=>{
@@ -98,31 +97,7 @@ function ChatDetail(){
     };
 }, []);
 
-    useEffect(()=>{
-
-        async function connectSocket(){
-
-            socket.connect();
-
-            const token = localStorage.getItem("token");
-
-            const response = await axios.get(
-                "https://mern-social-app-xdit.onrender.com/profile",
-                {
-                    headers:{
-                        Authorization: token
-                    }
-                }
-            );
-
-            socket.emit("join",response.data.user._id);
-        }
-
-        connectSocket();
-        return () => {
-            socket.disconnect();
-        };
-    },[]);
+   
 
     useEffect(()=>{
 

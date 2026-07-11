@@ -5,6 +5,7 @@ import App from './App.jsx'
 import { BrowserRouter } from "react-router-dom"
 import AuthProvider from './context/AuthContext.jsx'
 import { Toaster } from "react-hot-toast"
+import { SocketProvider } from './context/SocketContext.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -13,7 +14,11 @@ createRoot(document.getElementById('root')).render(
 
     <AuthProvider>
 
+      <SocketProvider>
+
     <App />
+
+    </SocketProvider>
 
     <Toaster position="top-center"
     reverseOrder={false}/>
