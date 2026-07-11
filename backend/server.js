@@ -569,19 +569,19 @@ app.post("/message",authMiddleware,async(req,res)=>{
 
        const senderUnreadCount = 0;
 
-       const receiverCoversation = await
-       Conversation.findById(conversation)
+       const receiverConversation = await
+       Conversation.findById(conversationId)
        .populate("participants","name profilePic");
 
-       receiverCoversation._doc.unreadCount = receiverUnreadCount;
+       receiverConversation._doc.unreadCount = receiverUnreadCount;
 
        const senderConversation = await
        Conversation.findById(conversationId)
        .populate("participants","name profilePic");
 
-       senderConversation.doc.unreadCount = senderUnreadCount;
+       senderConversation._doc.unreadCount = senderUnreadCount;
 
-       io.to(receiverId.toString()).emit("conversationUpdate",receiverCoversation);
+       io.to(receiverId.toString()).emit("conversationUpdate",receiverConversation);
 
        io.to(req.user.id).emit("conversationUpdate",senderConversation);
 
