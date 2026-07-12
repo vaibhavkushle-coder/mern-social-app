@@ -164,9 +164,11 @@ function ChatDetail(){
     async function sendMessage(){
         try{
 
+            if(!conversation?._id) return;
+
             const formData = new FormData();
 
-            formData.append("conversationId",conversation._Id);
+            formData.append("conversationId",conversation._id);
             formData.append("text",text);
 
             if(selectedImage){
