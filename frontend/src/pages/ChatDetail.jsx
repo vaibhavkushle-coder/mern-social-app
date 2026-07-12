@@ -166,14 +166,14 @@ function ChatDetail(){
 
             const formData = new FormData();
 
-            formData.append("conversationId",conversationId);
+            formData.append("conversationId",conversation._Id);
             formData.append("text",text);
 
             if(selectedImage){
                 formData.append("image",selectedImage);
             }
 
-            if(!text.trim()) return;
+            if(!text.trim() && !selectedImage) return;
 
             const token = localStorage.getItem("token");
 
@@ -190,7 +190,8 @@ function ChatDetail(){
             );
 
             setMessages((prev)=>[...prev,response.data]);
-                        setText("");
+            setText("");
+            setSelectedImage(null);
 
 
         }catch(error){
