@@ -531,8 +531,8 @@ app.post(
 
             const result = await
             cloudinary.uploader.upload(
-                `data:${req.file.mimetype};base64,$
-                {req.file.buffer.toString("base64)}`
+                `data:${req.file.mimetype};base64,
+                ${req.file.buffer.toString("base64")}`
             );
 
             imageUrl = result.secure_url;
