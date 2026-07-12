@@ -536,11 +536,11 @@ app.post(
             imageUrl = result.secure_url;
         }
 
-        if(!text.trim() && !req.file){
-            return res.status(400).json({
-                message:"Message or image is required"
-            });
-        }
+      if((!text || !text.trim()) && !req.file){
+        return res.status(400).json({
+            message:"Message or image is required"
+        });
+      }
 
         const message = await Message.create({
 
