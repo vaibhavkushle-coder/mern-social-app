@@ -515,23 +515,42 @@ app.post("/conversation/:userId",authMiddleware,async(req,res)=>{
     }
 });
 
-app.post("/message",authMiddleware,async(req,res)=>{
+app.post(
+    "/message",
+    authMiddleware,
+    upload.single("image"),
+    async(req,res)=>{
 
     try{
 
         const { conversationId, text }= req.body;
 
-        if(!text.trim()){
+        let imageUrl = "";
+
+        if(req.file){
+
+            const result = await
+            cloudinary.uploader.upload(
+                `data:${req.file.mimetype};base64,$
+                {req.file.buffer.toString("base64)}`
+            );
+
+            imageUrl = result.secure_url;
+        }
+
+        if(!text.trim() && !req.file){
             return res.status(400).json({
-                message:"Message text cannot be empty"
+                message:"Message or image is required"
             });
         }
 
         const message = await Message.create({
 
             conversation: conversationId,
-            sender:req.user.id,
-            text
+            sender: req.user.id,
+            text,
+            image: imageUrl
+
         });
 
         const populatedMessage = await

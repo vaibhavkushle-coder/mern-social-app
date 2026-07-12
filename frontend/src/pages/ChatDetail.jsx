@@ -9,6 +9,7 @@ function ChatDetail(){
     const [conversation, setConversation] = useState(null);
     const [messages, setMessages] = useState([]);
     const [text, setText] = useState("");
+    const [selectedImage, setSelectedImage]= useState(null);
     const [currentUserId, setCurrentUserId] = useState("");
     const [onlineUsers, setOnlineUsers] = useState({});
     const [isTyping,setIsTyping] = useState(false);
@@ -163,19 +164,27 @@ function ChatDetail(){
     async function sendMessage(){
         try{
 
+            const formData = new FormData();
+
+            formData.append("conversationId",conversationId);
+            formData.append("text",text);
+
+            if(selectedImage){
+                formData.append("image",selectedImage);
+            }
+
             if(!text.trim()) return;
 
             const token = localStorage.getItem("token");
 
             const response = await axios.post(
                 "https://mern-social-app-xdit.onrender.com/message",
-                {
-                    conversationId: conversation._id,
-                    text
-                },
+                formData,
+              
                 {
                     headers:{
-                        Authorization: token
+                        Authorization: token,
+                        "Content-Type":"multipart/form-data"
                     }
                 }
             );
@@ -252,6 +261,14 @@ function ChatDetail(){
                                 : "bg-gray-200 text-black"
                             }`}
                             >
+
+                                {message.image && (
+                                    <img
+                                    src={message.image}
+                                    alt="chat"
+                                    className="w-52 rounded-lg mb-2"
+                                    />
+                                )}
                                 {message.text}
 
                                 {message.sender?._id===currentUserId && (
@@ -277,6 +294,24 @@ function ChatDetail(){
                 ✍️ Typing...
             </p>
         )}
+
+        {selectedImage && (
+            <div className="mb-2">
+                <img
+                src={URL.createObjectURL(selectedImage)}
+                alt="preview"
+                className="w-32 h-32 object-cover
+                rounded-lg border"
+                />
+
+                </div>
+        )}
+
+        <input
+        type="file"
+        accept="image/*"
+        onChange={(e)=>setSelectedImage(e.target.files[0])}
+        />
 
         <Input
         value={text}

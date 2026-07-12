@@ -20,6 +20,11 @@ const messageSchema = new mongoose.Schema(
             trim: true,
         },
 
+        image:{
+            type: String,
+            default:""
+        },
+
         seen:{
             type: Boolean,
             default: false,
