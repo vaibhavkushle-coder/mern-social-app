@@ -51,10 +51,10 @@ useEffect(() => {
     });
 
 }, [messages, currentUserId]);
-    useEffect(()=>{
 
-        
-      
+
+    useEffect(()=>{
+     
         socket.on("typing",(data)=>{
             setIsTyping(true);
         });
@@ -65,6 +65,8 @@ useEffect(() => {
         
 
             socket.on("messageSeen",(data)=>{
+
+                console.log("MESSAGE SEEN RECEIVED",data);
 
                 setMessages((prev)=>
                     prev.map((message)=>{
