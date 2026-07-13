@@ -235,7 +235,7 @@ rounded-2xl shadow-2xl z-50">
     >
         🔔
         {notificationCount > 0 &&(
-            <span className="absolute -top-1-right-1 bg-red-500 
+            <span className="absolute -top-1 -right-1 bg-red-500 
             text-white text-xs rounded-full px-1">
                 {notificationCount}
             </span>

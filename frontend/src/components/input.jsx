@@ -1,16 +1,14 @@
 function Input({
-    type,
     placeholder,
     value,
     onChange,
-    onKeyDown
+    onKeyDown,
+    inputRef
 }){
 
     return(
 
-        <input
-
-        type={type}
+        <textarea
 
         placeholder={placeholder}
 
@@ -20,8 +18,13 @@ function Input({
 
         onKeyDown={onKeyDown}
 
+        rows={1}
+
+        ref={inputRef}
+
         className="w-full border border-gray-300 p-3
-        rounder-lg outline-none focus:border-blue-500"
+        rounded-lg outline-none focus:border-blue-500
+        resize-none shadow"
 
         />
 

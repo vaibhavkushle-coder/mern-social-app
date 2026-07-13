@@ -17,9 +17,11 @@ function ChatDetail(){
     const { id } = useParams();
     const messagesEndRef = useRef(null);
     const typingTimeout = useRef(null);
+    const fileInputRef = useRef(null);
+    const textAreaRef = useRef(null);
 
    
-
+/*
     useEffect(()=>{
 
         messages.forEach((message)=>{
@@ -35,6 +37,7 @@ function ChatDetail(){
         });
 
     },[messages,currentUserId]);
+    */
 
     useEffect(()=>{
         
@@ -156,6 +159,18 @@ function ChatDetail(){
             );
 
             setMessages(response.data);
+
+            response.data.forEach((message)=>{
+
+                if(
+                    message.sender._id.toString() !== currentUserId && !message.seen
+                ){
+                    socket.emit("messageSeen",{
+                        messageId:message._id
+                    });
+                }
+            });
+
         } catch(error){
             console.error(error);
         }
@@ -194,6 +209,7 @@ function ChatDetail(){
             setMessages((prev)=>[...prev,response.data]);
             setText("");
             setSelectedImage(null);
+            fileInputRef.current.value = "";
 
 
         }catch(error){
@@ -224,7 +240,7 @@ function ChatDetail(){
 
     return(
 
-        <div className="p-5"> 
+        <div className="p-5 pb-28"> 
 
         <h1 className="text-2xl font-bold">
            💬 Chat
@@ -239,7 +255,7 @@ function ChatDetail(){
         </p>
 
         <div className="bg-white rounded-xl shadow
-        p-4 mb-4 h-[400px] overflow-y-auto">
+        p-4 mb-4 h-[55vh] overflow-y-auto">
             {messages.length === 0 ? (
                 <p className="text-gray-500 text-center">
                     NO messages yet 👋
@@ -311,14 +327,38 @@ function ChatDetail(){
         )}
 
         <input
+        ref={fileInputRef}
         type="file"
         accept="image/*"
+        id="imageInput"
+        className="hidden"
         onChange={(e)=>setSelectedImage(e.target.files[0])}
         />
 
+        <label
+        htmlFor="imageInput"
+        className="bg-gray-200 px-3 py-2
+        rounded-lg cursor-pointer "
+        >{selectedImage?"🖼️Change image" : " 📷 Image"}</label>
+
         <Input
         value={text}
+
+        onKeyDown={(e)=>{
+            if(e.key==="Enter" && !e.shiftKey){
+                e.preventDefault();
+                sendMessage();
+            }
+        }}
+
+        inputRef={textAreaRef}
+
         onChange={(e)=>{
+
+            if(textAreaRef.current){
+                textAreaRef.current.style.height = "auto";
+                textAreaRef.current.style.height = textAreaRef.current.scrollHeight+"px";
+            }
 
             setText(e.target.value);
 
@@ -343,7 +383,7 @@ function ChatDetail(){
         className="bg-blue-500 text-white px-4 py-2 rounded-lg mt-2"
         onClick={sendMessage}
         >
-            Send
+           📤 Send
         </button>
 
 

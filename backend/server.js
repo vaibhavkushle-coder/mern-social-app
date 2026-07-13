@@ -75,27 +75,48 @@ io.on("connection",(socket) => {
         });
         
 
-        socket.on("messageSeen",async(data)=>{
+socket.on("messageSeen", async (data) => {
+    try {
 
-            const message = await
-            Message.findByIdAndUpdate(
-                data.messageId,
-                {seen:true},
-                {new:true}
-            );
+        console.log("=========== MESSAGE SEEN ===========");
+        console.log("Received Data:", data);
 
-            const senderSocket =
-            onlineUsers[message.sender.toString()];
+        const message = await Message.findById(data.messageId);
 
-            if(senderSocket){
+        if (!message) {
+            console.log("Message not found");
+            return;
+        }
 
-                io.to(senderSocket).emit("messageSeen",{
-                    messageId:message._id
-                });
-            }
+        console.log("Message Sender:", message.sender.toString());
+        console.log("Socket ID:", socket.id);
 
-        });
+        const updatedMessage = await Message.findByIdAndUpdate(
+            data.messageId,
+            { seen: true },
+            { new: true }
+        );
 
+        console.log("Seen Updated:", updatedMessage._id);
+
+        const senderSocket = onlineUsers[updatedMessage.sender.toString()];
+
+        console.log("Sender Socket:", senderSocket);
+
+        if (senderSocket) {
+            io.to(senderSocket).emit("messageSeen", {
+                messageId: updatedMessage._id,
+            });
+
+            console.log("messageSeen emitted to sender");
+        }
+
+        console.log("===================================");
+
+    } catch (error) {
+        console.log("MESSAGE SEEN ERROR =>", error);
+    }
+});
 
     socket.on("disconnect",() => {
 
