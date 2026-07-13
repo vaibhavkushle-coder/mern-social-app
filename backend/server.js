@@ -75,50 +75,7 @@ io.on("connection",(socket) => {
         });
         
 
-socket.on("messageSeen", async (data) => {
-    try {
 
-        console.log("=========== MESSAGE SEEN ===========");
-        console.log("Received Data:", data);
-
-        const message = await Message.findById(data.messageId);
-
-        if (!message) {
-            console.log("Message not found");
-            return;
-        }
-
-        console.log("Message Sender:", message.sender.toString());
-        console.log("Socket ID:", socket.id);
-                console.log("Message Seen ID:",data.messageId);
-
-
-        const updatedMessage = await Message.findByIdAndUpdate(
-            data.messageId,
-            { seen: true },
-            { new: true }
-        );
-
-        console.log("Seen Updated:", updatedMessage._id);
-
-        const senderSocket = onlineUsers[updatedMessage.sender.toString()];
-
-        console.log("Sender Socket:", senderSocket);
-
-        if (senderSocket) {
-            io.to(senderSocket).emit("messageSeen", {
-                messageId: updatedMessage._id,
-            });
-
-            console.log("messageSeen emitted to sender");
-        }
-
-        console.log("===================================");
-
-    } catch (error) {
-        console.log("MESSAGE SEEN ERROR =>", error);
-    }
-});
 
     socket.on("disconnect",() => {
 

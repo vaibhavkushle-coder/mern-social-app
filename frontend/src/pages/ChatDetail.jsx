@@ -24,33 +24,6 @@ function ChatDetail(){
     console.log(messages);
 
    
-useEffect(() => {
-
-    messages.forEach((message) => {
-
-        console.log("Sender:", message.sender._id);
-        console.log("Current:", currentUserId);
-        console.log(
-            "Equal ?",
-            message.sender._id.toString() === currentUserId
-        );
-
-        if (
-            message.sender._id.toString() !== currentUserId &&
-            !message.seen
-        ) {
-
-            console.log("EMITTING MESSAGE SEEN");
-
-            socket.emit("messageSeen", {
-                messageId: message._id
-            });
-
-        }
-
-    });
-
-}, [messages, currentUserId]);
 
 
     useEffect(()=>{
@@ -64,27 +37,9 @@ useEffect(() => {
         });
         
 
-            socket.on("messageSeen",(data)=>{
-
-                console.log("MESSAGE SEEN RECEIVED",data);
-
-                setMessages((prev)=>
-                    prev.map((message)=>{
-                        if(message._id===data.messageId){
-                            return{
-                                ...message,
-                                seen:true
-                            };
-                        }
-                        return message;
-                    })
-                );
-            });
-
             return()=>{
                 socket.off("typing");
                 socket.off("stopTyping");
-                socket.off("messageSeen");
             };
         
     },[]);
@@ -298,7 +253,7 @@ useEffect(() => {
 
                                 {message.sender?._id===currentUserId && (
                                     <p className="text-xs mt-1 text-right">
-                                        {message.seen?"✔️✔️Seen":"✔️send"}
+                                        ✔️send
                                     </p>
                                 )}
 
