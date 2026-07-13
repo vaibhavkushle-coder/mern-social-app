@@ -81,8 +81,11 @@ function ChatDetail(){
     },[messages]);
 
     useEffect(()=>{
+
+        if(id){
         getProfile();
         getOrCreateConversation();
+        }
     },[]);
 
 
