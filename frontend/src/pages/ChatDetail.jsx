@@ -20,26 +20,39 @@ function ChatDetail(){
     const fileInputRef = useRef(null);
     const textAreaRef = useRef(null);
 
+    console.log("Current User ID:",currentUserId);
+    console.log(messages);
+
    
-/*
+useEffect(() => {
+
+    messages.forEach((message) => {
+
+        console.log("Sender:", message.sender._id);
+        console.log("Current:", currentUserId);
+        console.log(
+            "Equal ?",
+            message.sender._id.toString() === currentUserId
+        );
+
+        if (
+            message.sender._id.toString() !== currentUserId &&
+            !message.seen
+        ) {
+
+            console.log("EMITTING MESSAGE SEEN");
+
+            socket.emit("messageSeen", {
+                messageId: message._id
+            });
+
+        }
+
+    });
+
+}, [messages, currentUserId]);
     useEffect(()=>{
 
-        messages.forEach((message)=>{
-            
-            if(
-                message.sender._id.toString() !== currentUserId &&
-                !message.seen
-            ){
-                socket.emit("messageSeen",{
-                    messageId:message._id
-                });
-            }
-        });
-
-    },[messages,currentUserId]);
-    */
-
-    useEffect(()=>{
         
       
         socket.on("typing",(data)=>{
@@ -160,16 +173,7 @@ function ChatDetail(){
 
             setMessages(response.data);
 
-            response.data.forEach((message)=>{
-
-                if(
-                    message.sender._id.toString() !== currentUserId && !message.seen
-                ){
-                    socket.emit("messageSeen",{
-                        messageId:message._id
-                    });
-                }
-            });
+           
 
         } catch(error){
             console.error(error);

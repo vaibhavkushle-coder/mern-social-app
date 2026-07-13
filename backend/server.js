@@ -90,6 +90,8 @@ socket.on("messageSeen", async (data) => {
 
         console.log("Message Sender:", message.sender.toString());
         console.log("Socket ID:", socket.id);
+                console.log("Message Seen ID:",data.messageId);
+
 
         const updatedMessage = await Message.findByIdAndUpdate(
             data.messageId,
